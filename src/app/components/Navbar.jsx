@@ -27,9 +27,10 @@ export default function Navbar() {
   }, [pathname]); 
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-black/55 shadow-md py-2' : 'bg-transparent py-4'}`}>
+    {/* <nav className={`fixed w-full z-50 transition-all duration-300 'bg-transparent py-4'}`}> */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mt-2">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -37,7 +38,7 @@ export default function Navbar() {
             className="flex-shrink-0"
           >
             <Link href="/" className="flex items-center">
-              <span className={`text-2xl font-bold ${scrolled ? 'text-indigo-600' : 'text-white'}`}>
+              <span className={`text-2xl font-bold ${scrolled ? 'text-white' : 'text-white'} `}>
                 Campus Loop
               </span>
             </Link>
