@@ -43,7 +43,7 @@ export default function Layout({ children }) {
         <footer className="bg-gray-800 text-white py-12 px-4">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
-              <h3 className="text-2xl font-bold mb-4">Mentor Match</h3>
+              <h3 className="text-2xl font-bold mb-4">Campus Loop</h3>
               <p className="text-gray-300 mb-4">
                 Connecting aspiring professionals with industry experts for personalized mentorship.
               </p>
@@ -66,7 +66,7 @@ export default function Layout({ children }) {
           </div>
           
           <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-gray-700 text-center text-gray-400">
-            <p>&copy; {new Date().getFullYear()} Mentor Match. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Campus Loop. All rights reserved.</p>
           </div>
         </footer>
       </div>

@@ -32,7 +32,7 @@ export default function Hero() {
         opacity: 1,
         y: 0, 
         stagger: 0.05,
-        duration: 0.8,
+        duration: 0.4,
         ease: "power2.out",
         delay: 0.3
       });
@@ -90,14 +90,13 @@ export default function Hero() {
           <h1 
             ref={textRef}
             className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-8 leading-tight tracking-tighter text-white"
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800 }}
+            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800, textWrap:'wrap' }}
             // Initial styles are handled by GSAP now if you want vertical animation
             // style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800, opacity: 0 }} 
           >
             {/* Keep original text structure for initial render */}
-            <span className="block mb-2">Elevate Your Career</span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-              With Expert Mentorship
+            <span className="block mb-2 ">Connect with Senior's and &nbsp;
+              ask them their experience's
             </span>
           </h1>
           
@@ -107,8 +106,7 @@ export default function Hero() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 1 }}
           >
-            Connect with industry-leading professionals who will guide you through your 
-            career journey with personalized mentorship sessions.
+            Get guidance about, campus life, entrance preparation, how to start coding and anything.
           </motion.p>
           
           <motion.div
@@ -123,17 +121,17 @@ export default function Hero() {
               className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-lg font-medium rounded-md hover:shadow-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 border border-indigo-500"
               style={{ backdropFilter: 'blur(8px)' }}
             >
-              Find Your Mentor
+              Checkout a Senior
             </button>
-            <button 
+            {/* <button 
               onClick={() => {
                 // This uses browser APIs, reinforcing the need for 'use client'
                 document.getElementById('featured-mentors')?.scrollIntoView({ behavior: 'smooth' });
               }}
               className="px-8 py-4 bg-transparent text-white text-lg font-medium rounded-md border border-indigo-500 hover:bg-indigo-900/30 transition-all duration-300"
             >
-              Explore Mentors
-            </button>
+            See Senior's
+            </button> */}
           </motion.div>
         </motion.div>
       </div>

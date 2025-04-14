@@ -27,7 +27,7 @@ export const HeroParallax = ({
   return (
     <div
       ref={ref}
-      className="h-[250vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]">
+      className=" h-[180vh] md:h-[250vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]">
       <Header />
       <motion.div
         style={{
@@ -91,6 +91,7 @@ export const ProductCard = ({
           height="600"
           width="600"
           className="object-cover object-left-top absolute h-full w-full inset-0"
+          style={{borderRadius: "10px"}}
           alt={product.title} />
       </Link>
       <div
