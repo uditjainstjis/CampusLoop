@@ -10,7 +10,7 @@ const sectionsData = [
     {
         id: 1,
         title: 'Is NST the right college for me?',
-        questions: [ /* ... */ ],
+        questions: [ 'Opportunities at NST', 'Unfiltered Truth About NST'],
         bgColor: '#fad3e1', // Light Pink
         frameBgColor: '#F8BBD0', // Darker Pink
         imageUrl: '/ru1.avif',
@@ -18,23 +18,23 @@ const sectionsData = [
     {
         id: 2,
         title: 'How to excel early in college?',
-        questions: [ /* ... */ ],
+        questions: ['How to crack internships in 1st year?', 'How to get into Google Summer Internship?'],
         bgColor: '#d1d5ed', // Light Indigo
         frameBgColor: '#C5CAE9', // Darker Indigo
         imageUrl: '/stud1.jpg',
     },
     {
         id: 3,
-        title: 'Navigating NST Admissions & Interviews',
-        questions: [ /* ... */ ],
+        title: 'How to crack NSAT with 9+ score',
+        questions: ['How to Crack Interview round 1', 'How to clear Newtons Tech round'],
         bgColor: '#bfe4e1', // Light Teal
         frameBgColor: '#B2DFDB', // Darker Teal
         imageUrl: '/dy1.jpg',
     },
     {
         id: 3,
-        title: 'Navigating NST Admissions & Interviews',
-        questions: [ /* ... */ ],
+        title: 'How to crack NSAT with 9+ score',
+        questions: [],
         bgColor: '#bfe4e1', // Light Teal
         frameBgColor: '#B2DFDB', // Darker Teal
         imageUrl: '/dy1.jpg',
