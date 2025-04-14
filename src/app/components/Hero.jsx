@@ -95,8 +95,7 @@ export default function Hero() {
             // style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800, opacity: 0 }} 
           >
             {/* Keep original text structure for initial render */}
-            <span className="block mb-2 ">Connect with Senior's and &nbsp;
-              ask them their experience's
+            <span className="block mb-2 ">Connect with Senior's and ask them their experience's
             </span>
           </h1>
           
