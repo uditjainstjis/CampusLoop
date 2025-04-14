@@ -90,6 +90,7 @@ export default function ScrollSections() {
               />
             </div>
           </div>
+          
         );
       })}
     </div>
