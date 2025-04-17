@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '../../lib/mongodb'; // Adjust path if your lib folder is elsewhere
 import Mentor from '../../models/Mentor';     // Adjust path if your models folder is elsewhere
+import { getServerSession } from "next-auth/next";
 
 /**
  * Handles GET requests to /api/mentors
@@ -8,6 +9,19 @@ import Mentor from '../../models/Mentor';     // Adjust path if your models fold
  */
 export async function GET(request) {
   try {
+    const session = await getServerSession(request);
+    if (!session || !session.user) {
+      return NextResponse.json(
+        { response: "Unauthorized" },
+        {
+          status: 401,
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-store, no-cache, must-revalidate'
+          }
+        }
+      );
+    }
     await dbConnect(); // Establish database connection (uses cached if available)
 
     // Fetch all mentors from the 'mentors' collection

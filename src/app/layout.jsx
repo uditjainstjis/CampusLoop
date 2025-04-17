@@ -6,16 +6,18 @@ import Layout from './components/Layout';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import SessionWrapper from "./components/SessionWrapper";
-import { AuthProvider } from './contexts/AuthContext';
+
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
   return (
     <html lang="en">
-      <head />
+      <head>
+        <link rel="icon" href="/logo.png" />
+      </head>
       <body>
+        
       <SessionWrapper>
-      {/* <AuthProvider> */}
         <Layout>
           <AnimatePresence mode="wait">
             <motion.div key={pathname}>
@@ -23,8 +25,8 @@ export default function RootLayout({ children }) {
             </motion.div>
           </AnimatePresence>
         </Layout>
-        {/* </AuthProvider> */}
-        </SessionWrapper>
+      </SessionWrapper>
+
 
       </body>
     </html>

@@ -21,7 +21,6 @@ export default function Hero() {
       characters.forEach((char, i) => {
         const span = document.createElement('span');
         span.innerText = char === ' ' ? '\u00A0' : char; // Keep non-breaking space for spaces
-        span.style.opacity = '0';
         span.style.display = 'inline-block';
         // Add initial vertical offset for animation if desired, or rely purely on GSAP's 'y'
         // span.style.transform = 'translateY(20px)'; 
@@ -75,9 +74,6 @@ export default function Hero() {
       <div className="container mx-auto px-6 z-10 pt-12 md:pt-0">
         <motion.div 
           className="relative z-10 text-center max-w-5xl mx-auto"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
         >
           {/* Subtle decorative line */}
           <motion.div 

@@ -6,6 +6,7 @@ import Head from 'next/head'; // Or use generateMetadata
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import MentorCard from '../components/MentorCard'; // Adjust path if needed
+import { useRouter } from 'next/navigation'
 
 // --- Default/Fallback Data (Optional, but good for resilience) ---
 // Use structure matching your LATEST schema if you keep this
@@ -29,6 +30,7 @@ export default function MentorsListPage() {
   // const [filter, setFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
   const [statusMessage, setStatusMessage] = useState(null);
+  const router = useRouter()
 
   // Fetch mentors on component mount
   useEffect(() => {
@@ -38,7 +40,12 @@ export default function MentorsListPage() {
       try {
         const response = await fetch('/api/mentors'); // Fetch from your API route
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          if(response.status==401){
+            router.push('/signin')
+            return
+          }else{
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
         }
         const mentorsData = await response.json();
 
