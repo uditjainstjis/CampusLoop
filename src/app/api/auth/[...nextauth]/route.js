@@ -1,15 +1,14 @@
+// /Users/uditjain/Desktop/menti/src/app/api/auth/[...nextauth]/route.js
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
-import clientPromise from '../../../lib/mongodb';
-import dbConnect from '../../../lib/mongoose';
-import User from '../../../models/User';
+import clientPromise from '../../../lib/mongodb'; // Ensure this path is correct
+// import dbConnect from '../../../lib/mongodb'; // Mongoose connection might not be needed here anymore unless used elsewhere
+import User from '../../../models/User'; // Still needed for JWT/Session callbacks if adding custom fields like role
 
-// Connect to mongoose
-dbConnect();
-
-export default NextAuth({
-  adapter: MongoDBAdapter(clientPromise),
+// Define Auth Options Object
+const authOptions = {
+  adapter: MongoDBAdapter(clientPromise), // Use the adapter
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -18,7 +17,7 @@ export default NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt', // Keep JWT strategy to customize token/session
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   jwt: {
@@ -30,62 +29,57 @@ export default NextAuth({
     error: '/auth/error',
   },
   callbacks: {
-    async signIn({ user, account, profile }) {
-      // Create or update the user in our custom model
-      if (account.provider === 'google') {
+    // signIn callback is often not needed when using an adapter,
+    // unless you want to implement specific logic like blocking certain users.
+    // async signIn({ user, account, profile, email, credentials }) {
+    //   const isAllowedToSignIn = true
+    //   if (isAllowedToSignIn) {
+    //     return true
+    //   } else {
+    //     // Return false to display a default error message
+    //     return false
+    //     // Or you can return a URL to redirect to:
+    //     // return '/unauthorized'
+    //   }
+    // },
+
+    async jwt({ token, user, account, profile }) {
+      // The user object passed here on initial sign-in comes from the adapter.
+      // It might already contain the user ID.
+      if (user) {
+        token.id = user.id; // The adapter usually provides user.id
+        // Fetch custom fields like 'role' if they aren't added by the adapter
+        // Note: This requires your adapter's user schema to align or your User model to be queryable
         try {
-          // First, try to find the user
-          const existingUser = await User.findOne({ email: user.email });
-          
-          if (existingUser) {
-            // Update the user's information if they exist
-            existingUser.name = user.name;
-            existingUser.image = user.image;
-            existingUser.provider = account.provider;
-            existingUser.googleId = profile.sub;
-            await existingUser.save();
-          } else {
-            // Create a new user if they don't exist
-            await User.create({
-              name: user.name,
-              email: user.email,
-              image: user.image,
-              emailVerified: user.emailVerified,
-              provider: account.provider,
-              googleId: profile.sub,
-            });
-          }
-          return true;
+            // Use the user ID provided by the adapter/session user object
+            const dbUser = await User.findById(user.id); 
+            if (dbUser) {
+                token.role = dbUser.role; // Add role from your custom User model
+            } else {
+                // Handle case where user exists in adapter DB but maybe not Mongoose model? (unlikely if using same DB)
+                console.warn(`User ${user.id} not found in custom User collection for role lookup.`);
+            }
         } catch (error) {
-          console.error('Error saving user to database:', error);
-          return true; // Still allow sign in even if our custom logic fails
-        }
-      }
-      return true;
-    },
-    async jwt({ token, user, account }) {
-      // Add role to the token right after sign in
-      if (account && user) {
-        try {
-          const dbUser = await User.findOne({ email: user.email });
-          if (dbUser) {
-            token.role = dbUser.role;
-            token.id = dbUser._id.toString();
-          }
-        } catch (error) {
-          console.error('Error retrieving user role:', error);
+            console.error('Error retrieving user role for JWT:', error);
         }
       }
       return token;
     },
-    async session({ session, token }) {
-      // Add role and id to the session
+
+    async session({ session, token, user }) {
+      // Add custom properties from the token to the session
       if (token) {
-        session.user.role = token.role;
         session.user.id = token.id;
+        session.user.role = token.role;
       }
+      // The 'user' object here is the session user, potentially enriched by the adapter
       return session;
     },
   },
   debug: process.env.NODE_ENV === 'development',
-});
+};
+
+// Export named handlers
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
+

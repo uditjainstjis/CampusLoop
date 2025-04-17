@@ -5,7 +5,7 @@ import './globals.css';
 import Layout from './components/Layout';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
-import { SessionProvider } from 'next-auth/react';
+import SessionWrapper from "./components/SessionWrapper";
 import { AuthProvider } from './contexts/AuthContext';
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -14,6 +14,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head />
       <body>
+      <SessionWrapper>
+      {/* <AuthProvider> */}
         <Layout>
           <AnimatePresence mode="wait">
             <motion.div key={pathname}>
@@ -21,6 +23,9 @@ export default function RootLayout({ children }) {
             </motion.div>
           </AnimatePresence>
         </Layout>
+        {/* </AuthProvider> */}
+        </SessionWrapper>
+
       </body>
     </html>
   );
