@@ -33,7 +33,7 @@ export default function Home() {
       <Faq/>
       {/* <Image style={{borderRadius:'50px', marginLeft:'auto', marginRight:'auto', marginTop:'-200px', marginBottom:'200px'}}  height={500} width={500} src='/image.png'/> */}
 
-      <section className='relative h-[80vh] bg-[#bfe4e1]'>    
+      <section className='relative h-[80vh] bg-gradient-to-b from-[#bfe4e1] to-green-100'>    
         
             <AnimatedSeniorConnectImage />
       
