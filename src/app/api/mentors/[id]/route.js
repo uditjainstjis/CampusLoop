@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import dbConnect from '../../../lib/mongodb'; // Adjust path if needed
 import Mentor from '../../../models/Mentor';     // Adjust path if needed
 import mongoose from 'mongoose';
+import { getServerSession } from "next-auth/next";
 
 /**
  * Handles GET requests to /api/mentors/[id]
@@ -11,7 +12,19 @@ import mongoose from 'mongoose';
  */
 export async function GET(request, { params }) {
   const { id } = params; // Extract the id from the URL parameters
-
+  const session = await getServerSession(request);
+  if (!session || !session.user) {
+    return NextResponse.json(
+      { response: "Unauthorized" },
+      {
+        status: 401,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, no-cache, must-revalidate'
+        }
+      }
+    );
+  }
   // Optional: Validate if the ID is a valid MongoDB ObjectId format
   if (!id || !mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json(

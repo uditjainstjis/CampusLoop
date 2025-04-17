@@ -44,7 +44,7 @@ export default function SignInPage() {
       
       <div className="max-w-md w-full overflow-hidden rounded-2xl bg-white shadow-2xl transition-all duration-300">
         {/* Top wave decoration */}
-        <div className="h-20 bg-gradient-to-r from-blue-600 to-indigo-600 w-full relative">
+        <div className="h-20  w-full relative">
           <div className="absolute -bottom-1 left-0 w-full">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-12">
               <path fill="#ffffff" fillOpacity="1" d="M0,128L48,117.3C96,107,192,85,288,90.7C384,96,480,128,576,133.3C672,139,768,117,864,101.3C960,85,1056,75,1152,80C1248,85,1344,107,1392,117.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
@@ -53,18 +53,23 @@ export default function SignInPage() {
         </div>
         
         <div className="px-8 py-8">
-          {/* Logo */}
+          {/* Enhanced Logo Section */}
           <div className="flex justify-center -mt-16 mb-6 relative z-10">
-            <div className="rounded-full bg-white p-3 shadow-lg border-4 border-white">
-              <div className="overflow-hidden rounded-full h-24 w-24 flex items-center justify-center bg-amber-50 ring-4 ring-blue-100">
-                <Image 
-                  className="transform hover:scale-105 transition-transform duration-300"
-                  alt="CampusLoop Logo" 
-                  width={100} 
-                  height={100}   
-                  src='/logo.png'
-                  priority
-                />
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="rounded-full bg-white p-3 shadow-xl border-4 border-white relative transform transition-all duration-300 group-hover:scale-105">
+                <div className="overflow-hidden rounded-full h-28 w-28 flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-100 ring-4 ring-blue-100">
+                  <div className="relative w-20 h-20 transform group-hover:rotate-6 transition-all duration-500">
+                    <Image 
+                      className="object-contain"
+                      alt="CampusLoop Logo" 
+                      fill
+                      sizes="(max-width: 768px) 80px, 80px"
+                      src='/logo.png'
+                      priority
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

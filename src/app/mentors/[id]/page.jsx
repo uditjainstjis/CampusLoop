@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'
 
 // Format date helper function
 const formatDate = (dateString) => {
@@ -41,6 +42,7 @@ export default function MentorDetailPage() {
   const [mentor, setMentor] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter()
 
   useEffect(() => {
     if (id) {
@@ -50,6 +52,10 @@ export default function MentorDetailPage() {
         setMentor(null);
         try {
           const response = await fetch(`/api/mentors/${id}`);
+          if(response.status==401){
+              router.push('/signin')
+              return
+          }
           if (!response.ok) {
             if (response.status === 404) { throw new Error('Mentor not found.'); }
             let errorMsg = `Failed to fetch mentor data (status: ${response.status})`;
