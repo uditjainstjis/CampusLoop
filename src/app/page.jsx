@@ -50,7 +50,7 @@ export default function Home() {
             {/* <AnimatedSeniorConnectImage /> */}
       
       {/* </section> */}
-      <div className={loaded ? "" : "bg-[#FFD833]"}>
+      <div className={loaded ? "" : " h-[500px] w-full bg-[#FFD833]"}>
       <div
         className="visme_d relative "
         data-title="CampusLoop form"
@@ -61,7 +61,7 @@ export default function Home() {
         data-form-id="123703"
       ></div>
     </div>
-    <div className='h-[13vh] bg-[#FFD833]'></div>
+    <div className='h-[12vh] bg-[#FFD833]'></div>
       {/* <div className="visme_d relative mt-[-50vh]" data-title="CampusLoop form" data-url="kk399r1x-campusloop-form" data-domain="forms" data-full-page="false" data-min-height="700px" data-form-id="123703"></div><script src="https://static-bundles.visme.co/forms/vismeforms-embed.js"></script> */}
     </motion.main>
 

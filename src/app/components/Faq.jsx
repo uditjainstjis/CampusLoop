@@ -1,35 +1,47 @@
-// components/FaqStickyScroll.jsx
 'use client';
 
-import { act, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
-import { isAscii } from 'buffer';
 
 // --- Data (keep your original data structure) ---
-const sections = [
+const sectionsData = [
     {
-      id: 1,
-      question: "Is NST the right college for me?",
-      answer: "Opportunities at NST ,Unfiltered Truth About NST",
-      color: "bg-indigo-500",
-      textColor: "text-indigo-700" // Optional: Text color related to background
+        id: 1,
+        title: 'Is NST the right college for me?',
+        questions: [ 'Opportunities at NST', 'Unfiltered Truth About NST'],
+        bgColor: '#fad3e1', // Light Pink
+        frameBgColor: '#F8BBD0', // Darker Pink
+        imageUrl: '/ru1.avif',
     },
     {
-      id: 2,
-      question: "How to excel early in college?",
-      answer: "How to crack internships in 1st year? ,How to get into Google Summer Internship?",
-      color: "bg-emerald-500",
-      textColor: "text-emerald-700"
+        id: 2,
+        title: 'How to excel early in college?',
+        questions: ['How to crack internships in 1st year?', 'How to get into Google Summer Internship?'],
+        bgColor: '#d1d5ed', // Light Indigo
+        frameBgColor: '#C5CAE9', // Darker Indigo
+        imageUrl: '/stud1.jpg',
     },
     {
-      id: 3,
-      question: "How to crack NSAT with 9+ score",
-      answer: "How to Crack Interview round 1 ,How to clear Newtons Tech round",
-      color: "bg-amber-500",
-      textColor: "text-amber-700"
+        id: 3,
+        title: 'How to crack NSAT with 9+ score',
+        questions: ['How to Crack Interview round 1', 'How to clear Newtons Tech round'],
+        bgColor: '#bfe4e1', // Light Teal
+        frameBgColor: '#B2DFDB', // Darker Teal
+        imageUrl: '/dy1.jpg',
     },
-    // Add more sections if needed
+    
 ];
+
+const sections = sectionsData.map(section => ({
+    id: section.id,
+    question: section.title, // Use title as the main question
+    answer: section.questions.length > 0 ? section.questions.join(', ') : 'More content coming soon!', // Combine questions as answer
+    color: section.bgColor, // Use bgColor for the background color
+    textColor: '', // We don't have a direct equivalent, will handle text color in the card
+    frameBgColor: section.frameBgColor,
+    imageUrl: section.imageUrl,
+}));
+
 
 // --- Component ---
 export default function FaqStickyScroll() {
@@ -54,7 +66,6 @@ export default function FaqStickyScroll() {
       // Clamp the value to be within the valid range of indices
       setActiveSection(Math.min(Math.max(currentSection, 0), sections.length - 1));
   });
-  
 
   // Effect to check if the container is in the viewport to apply 'fixed' positioning
   useEffect(() => {
@@ -80,7 +91,7 @@ export default function FaqStickyScroll() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []); // Empty dependency array means this runs once on mount and cleans up on unmount
 
-  console.log(activeSection)
+
   // --- Card Animation Variants ---
   const cardVariants = {
     initial: { x: '-50%', y: '60%', opacity: 0, scale: 0.7, rotate: -5 }, // Start further down/left, slightly smaller/rotated
@@ -103,9 +114,10 @@ export default function FaqStickyScroll() {
       <div
         ref={stickyContentRef}
         className={`w-full h-screen overflow-hidden ${ isSticky ? 'fixed top-0 left-0' : 'sticky top-0' }`}
+        style={{ backgroundColor: currentBgColor }}
       >
         {/* Background colors - Animated Presence for smooth transitions */}
-        <AnimatePresence initial={false}>
+        {/* <AnimatePresence initial={false}>
           <motion.div
             key={`bg-${sections[activeSection].id}`} // Key changes trigger animation
             className={`absolute inset-0 ${currentBgColor}`}
@@ -114,7 +126,7 @@ export default function FaqStickyScroll() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
           />
-        </AnimatePresence>
+        </AnimatePresence> */}
 
         {/* Centered Content Area */}
         <div className="relative h-full w-full flex items-center justify-center p-4 md:p-8">
@@ -140,15 +152,18 @@ export default function FaqStickyScroll() {
                     // duration: 0.6 // Duration is often inferred with spring
                   }}
                 >
-                  <div className="p-6 md:p-8 bg-white bg-opacity-95 rounded-lg shadow-xl backdrop-blur-sm"> {/* Added backdrop blur */}
+                  <div className={`p-6 md:p-8 bg-white bg-opacity-95 rounded-lg shadow-xl backdrop-blur-sm`} style={{ backgroundColor: section.frameBgColor }}> {/* Added backdrop blur */}
                     <div className="relative mb-4">
                       {/* Decorative element using section's text color */}
-                      <div className={`absolute -left-4 top-1 w-1.5 h-6 ${section.color} rounded-full`} />
-                      <h2 className={`text-2xl font-semibold ml-2 ${section.textColor || 'text-gray-800'}`}>
+                      {section.color && <div className={`absolute -left-4 top-1 w-1.5 h-6`} style={{ backgroundColor: section.color, borderRadius: '9999px' }} />}
+                      <h2 className={`text-2xl font-semibold ml-2 text-gray-800`}>
                           {section.question}
                       </h2>
                     </div>
-                    <p className="text-gray-700 text-lg">{section.answer}</p>
+                    {section.answer && <p className="text-gray-700 text-lg">{section.answer}</p>}
+                    {section.imageUrl && (
+                      <img src={section.imageUrl} alt={section.question} className="mt-4 rounded-md" />
+                    )}
                   </div>
                 </motion.div>
               )
@@ -185,8 +200,6 @@ export default function FaqStickyScroll() {
           ))}
         </div>
       </div> {/* End Sticky/Fixed Content Wrapper */}
-
-      
     </div> // End Tall Container
   );
 }
