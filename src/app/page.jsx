@@ -30,6 +30,20 @@ export default function Home() {
 
       className="overflow-hidden"
     >
+      <div className="w-full absolute z-10 flex justify-center items-center">
+        <video
+          className="w-full rounded-xl"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source src="guy.webm" type="video/webm" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      {/* <div className="visme_d mt-12" data-title="Sample Custom Form" data-url="x4x31v60-sample-custom-form" data-domain="forms" data-full-page="false" data-min-width="100vw" data-min-height="200vh"  data-form-id="124034"></div><script src="https://static-bundles.visme.co/forms/vismeforms-embed.js"></script> */}
       <Hero />
       <div className="w-full z-10 h-[30vh] "></div>
 
@@ -37,10 +51,8 @@ export default function Home() {
       <div className="w-full  h-[100vh] absolute bg-gradient-to-b from-white to-[#fad1e1] rounded-2xl"></div>
 
       <main > 
-      <section className='bg-[#FFD833] absolute h-[300vh] w-full '></section>
+      {/* <section className='bg-[#FFD833] absolute h-[300vh] w-full '></section> */}
 
-      {/* The FAQ section with friction scroll */}
-        <Faq />
 
     </main>
       {/* <Image style={{borderRadius:'50px', marginLeft:'auto', marginRight:'auto', marginTop:'-200px', marginBottom:'200px'}}  height={500} width={500} src='/image.png'/> */}
@@ -50,7 +62,7 @@ export default function Home() {
             {/* <AnimatedSeniorConnectImage /> */}
       
       {/* </section> */}
-      <div className={loaded ? "" : " h-[500px] w-full bg-[#FFD833]"}>
+      {/* <div className={loaded ? "" : " h-[500px] w-full bg-[#FFD833]"}>
       <div
         className="visme_d relative "
         data-title="CampusLoop form"
@@ -60,8 +72,8 @@ export default function Home() {
         data-min-height="700px"
         data-form-id="123703"
       ></div>
-    </div>
-    <div className='h-[12vh] bg-[#FFD833]'></div>
+    </div> */}
+    {/* <div className='h-[12vh] bg-[#FFD833]'></div> */}
       {/* <div className="visme_d relative mt-[-50vh]" data-title="CampusLoop form" data-url="kk399r1x-campusloop-form" data-domain="forms" data-full-page="false" data-min-height="700px" data-form-id="123703"></div><script src="https://static-bundles.visme.co/forms/vismeforms-embed.js"></script> */}
     </motion.main>
 

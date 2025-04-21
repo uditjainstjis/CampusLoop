@@ -76,58 +76,7 @@ export default function Hero() {
           className="relative z-10 text-center max-w-5xl mx-auto"
         >
           {/* Subtle decorative line */}
-          <motion.div 
-            initial={{ width: 0 }}
-            animate={{ width: '120px' }}
-            transition={{ duration: 1.2, delay: 0.3 }}
-            className="h-0.5 bg-gradient-to-r from-indigo-400 to-purple-500 mx-auto mb-6"
-          ></motion.div>
-          
-          <h1 
-            ref={textRef}
-            className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-8 leading-tight tracking-tighter text-white"
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800, textWrap:'wrap' }}
-            // Initial styles are handled by GSAP now if you want vertical animation
-            // style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800, opacity: 0 }} 
-          >
-            {/* Keep original text structure for initial render */}
-            <span className="block mb-2 ">A new way to explore college life
-            </span>
-          </h1>
-          
-          <motion.p 
-            className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto font-light leading-relaxed"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1 }}
-          >
-            Get guidance about, campus life, entrance preparation, how to start coding and anything.
-          </motion.p>
-          
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.3 }}
-            className="flex flex-col sm:flex-row justify-center gap-4"
-          >
-            <button 
-              // router.push is now correct because router comes from next/navigation
-              onClick={() => router.push('/mentors')} 
-              className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-lg font-medium rounded-md hover:shadow-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 border border-indigo-500"
-              style={{ backdropFilter: 'blur(8px)' }}
-            >
-              Checkout Senior's
-            </button>
-            {/* <button 
-              onClick={() => {
-                // This uses browser APIs, reinforcing the need for 'use client'
-                document.getElementById('featured-mentors')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="px-8 py-4 bg-transparent text-white text-lg font-medium rounded-md border border-indigo-500 hover:bg-indigo-900/30 transition-all duration-300"
-            >
-            See Senior's
-            </button> */}
-          </motion.div>
+
         </motion.div>
       </div>
       
