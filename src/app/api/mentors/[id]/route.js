@@ -5,7 +5,7 @@ import dbConnect from '../../../lib/mongodb'; // Adjust path if needed
 import Mentor from '../../../models/Mentor';     // Adjust path if needed
 import mongoose from 'mongoose';
 import { getServerSession } from "next-auth/next";
-import { authOptions } from '../../auth/[...nextauth]'; // Assuming your auth options are here
+import { authOptions } from '../../../lib/auth.config'; // Assuming your auth options are here
 
 // --- GET Request Handler (Existing Code - slightly modified session check) ---
 export async function GET(request, { params }) {
