@@ -7,28 +7,28 @@ import { isAscii } from 'buffer';
 
 // --- Data (keep your original data structure) ---
 const sections = [
-    {
-      id: 1,
-      question: "Is NST the right college for me?",
-      answer: "Opportunities at NST ,Unfiltered Truth About NST",
-      color: "bg-indigo-500",
-      textColor: "text-indigo-700" // Optional: Text color related to background
-    },
-    {
-      id: 2,
-      question: "How to excel early in college?",
-      answer: "How to crack internships in 1st year? ,How to get into Google Summer Internship?",
-      color: "bg-emerald-500",
-      textColor: "text-emerald-700"
-    },
-    {
-      id: 3,
-      question: "How to crack NSAT with 9+ score",
-      answer: "How to Crack Interview round 1 ,How to clear Newtons Tech round",
-      color: "bg-amber-500",
-      textColor: "text-amber-700"
-    },
-    // Add more sections if needed
+  {
+    id: 1,
+    question: "Is NST the right college for me?",
+    answer: "Opportunities at NST ,Unfiltered Truth About NST",
+    color: "bg-indigo-500",     // Kept
+    textColor: "text-indigo-700" // Kept (or adjust if needed for contrast)
+  },
+  {
+    id: 2,
+    question: "How to excel early in college?",
+    answer: "How to crack internships in 1st year? ,How to get into Google Summer Internship?",
+    color: "bg-teal-500",       // Changed from Emerald
+    textColor: "text-teal-700"   // Changed from Emerald
+  },
+  {
+    id: 3,
+    question: "How to crack NSAT with 9+ score",
+    answer: "How to Crack Interview round 1 ,How to clear Newtons Tech round",
+    color: "bg-slate-600",      // Changed from Amber
+    textColor: "text-slate-100"  // Changed from Amber (use a lighter text on dark slate)
+  },
+  // Add more sections if needed
 ];
 
 // --- Component ---

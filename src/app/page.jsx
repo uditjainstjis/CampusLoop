@@ -4,9 +4,8 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Hero from './components/Hero';
-// Assuming other components are correctly imported
 import MentorShowcase from './components/MentorShowcase';
-// ... other imports if needed
+// import Faq from './components/Faq'
 
 export default function Home() {
   // 1. State to track if the video should be clipped
@@ -27,9 +26,9 @@ export default function Home() {
   return (
     <motion.main className="overflow-hidden">
       {/* Consider adding pointer-events-none if this overlay shouldn't block interactions */}
-      <div className="w-full absolute z-10 md:block hidden flex justify-center items-center pointer-events-none">
+      <div className="w-full absolute z-10 sm:block hidden flex justify-center items-center pointer-events-none">
         {/* It might be better to control size/position on this container */}
-        <div className="w-full h-full relative mr-12"> {/* Added relative container for positioning context if needed */}
+        <div className="w-full h-full relative mr-32 md:mr-12 xl:mt-0 md:mt-[15vw] mt-[65vw] sm:mt-[30vw] lg:mt-[10vw]"> {/* Added relative container for positioning context if needed */}
           <video
             className="w-full h-full rounded-xl " // Removed mr-40 from video, apply to container if needed
             // 3. Apply conditional style for clip-path
@@ -64,7 +63,7 @@ export default function Home() {
       {/* <Faq /> */}
       {/* <HumanCards /> */}
       {/* <AnimatedSeniorConnectImage /> */}
-
+            <div className='h-[10vh] w-full'></div>
     </motion.main>
   );
 }
