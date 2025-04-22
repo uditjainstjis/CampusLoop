@@ -63,7 +63,7 @@ export default function Home() {
       {/* <Faq /> */}
       {/* <HumanCards /> */}
       {/* <AnimatedSeniorConnectImage /> */}
-            <div className='h-[10vh] w-full'></div>
+            <div className=' md:h-[0.1vh] h-[10vh]  w-full'></div>
     </motion.main>
   );
 }

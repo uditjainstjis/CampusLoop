@@ -85,7 +85,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-indigo-900 to-gray-900 z-0"></div>
       
       {/* Mesh overlay for texture */}
-      <div className="z-1000 absolute inset-0 opacity-10 z-0" 
+      <div className="z-[1000] absolute inset-0 opacity-10 z-0" 
         style={{ 
           backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Cg fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.2\'%3E%3Cpath d=\'M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 20v-1.41l2.83-2.83 1.41 1.41L1.41 20H0zm20 0v-1.41l2.83-2.83 1.41 1.41L21.41 20H20zM0 0v1.41l2.83 2.83-1.41 1.41L0 2.83V0h1.41l2.83 2.83-1.41 1.41L0 1.41V0h1.41l2.83 2.83-1.41 1.41L0 1.41V0zm20 0v1.41l2.83 2.83-1.41 1.41L20 2.83V0h1.41l2.83 2.83-1.41 1.41L20 1.41V0h1.41l2.83 2.83-1.41 1.41L20 1.41V0zm0 18.59L22.83 16l1.41 1.41L21.41 20H20v-1.41zm0 20v-1.41l2.83-2.83 1.41 1.41L21.41 40H20v-1.41zM0 36.59V40h-1.41l-2.83-2.83 1.41-1.41L0 38.59z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
         }}
@@ -116,7 +116,7 @@ export default function Hero() {
               transform: 'translateY(-100%)' // Start from top
             }}
           >
-            <span className="block z-1000">A new way </span>
+            <span className="block z-[1000]">A new way </span>
           </h1>
           
           {/* Subheading - Slides from right */}
@@ -131,11 +131,11 @@ export default function Hero() {
               transform: 'translateX(100%)' // Start from right
             }}
           >
-            <span className="block mb-2 z-1000">to explore college life</span>
+            <span className="block mb-2 z-[1000]">to explore college life</span>
           </h2>
           
           <motion.p 
-            className="text-xl md:text-2xl z-1000 text-gray-300 mb-10 max-w-3xl mx-auto font-light leading-relaxed"
+            className="text-xl md:text-2xl block z-[1000] text-gray-300 mb-10 max-w-3xl mx-auto font-light leading-relaxed"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 5.3 }} // Delayed to appear after both headings
