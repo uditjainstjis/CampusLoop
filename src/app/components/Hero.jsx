@@ -51,7 +51,7 @@ export default function Hero() {
           {
             x: "-10%",  // Overshoot to the left
             opacity: 1,
-            duration: 1,
+            duration: 0.64,
             ease: "power2.in" // Fast acceleration
           }
         )
@@ -61,7 +61,7 @@ export default function Hero() {
           duration: 0.3,
           ease: "back.out(2.5)" // Creates that sudden stop/jerk effect
         });
-      }, 3700); // 4 seconds delay for subheading
+      }, 4000); // 4 seconds delay for subheading
     }
 
     // Parallax effect on scroll
@@ -85,7 +85,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-indigo-900 to-gray-900 z-0"></div>
       
       {/* Mesh overlay for texture */}
-      <div className="absolute inset-0 opacity-10 z-0" 
+      <div className="z-1000 absolute inset-0 opacity-10 z-0" 
         style={{ 
           backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Cg fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.2\'%3E%3Cpath d=\'M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 20v-1.41l2.83-2.83 1.41 1.41L1.41 20H0zm20 0v-1.41l2.83-2.83 1.41 1.41L21.41 20H20zM0 0v1.41l2.83 2.83-1.41 1.41L0 2.83V0h1.41l2.83 2.83-1.41 1.41L0 1.41V0h1.41l2.83 2.83-1.41 1.41L0 1.41V0zm20 0v1.41l2.83 2.83-1.41 1.41L20 2.83V0h1.41l2.83 2.83-1.41 1.41L20 1.41V0h1.41l2.83 2.83-1.41 1.41L20 1.41V0zm0 18.59L22.83 16l1.41 1.41L21.41 20H20v-1.41zm0 20v-1.41l2.83-2.83 1.41 1.41L21.41 40H20v-1.41zM0 36.59V40h-1.41l-2.83-2.83 1.41-1.41L0 38.59z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
         }}
