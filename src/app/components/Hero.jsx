@@ -6,21 +6,44 @@ import gsap from 'gsap';
 import { useRouter } from 'next/navigation'; 
 
 export default function Hero() {
-  const textRef = useRef(null);
+  const mainHeadingRef = useRef(null);
+  const subHeadingRef = useRef(null);
   const containerRef = useRef(null);
   const router = useRouter(); 
 
   useEffect(() => {
-    const heading = textRef.current;
+    const mainHeading = mainHeadingRef.current;
+    const subHeading = subHeadingRef.current;
     
-    if (heading) {
-      // Wait 3 seconds before starting the animation
+    if (mainHeading) {
+      // Wait 2 seconds before starting the main heading animation (falling from top)
       setTimeout(() => {
-        // Create timeline for more complex animation sequence
-        const tl = gsap.timeline();
+        // Create timeline for main heading animation (falling from top)
+        const mainTl = gsap.timeline();
+        
+        mainTl.fromTo(mainHeading, 
+          { 
+            y: "-100%",  // Start position (from top)
+            opacity: 0
+          }, 
+          {
+            y: "0%",     // Final position
+            opacity: 1,
+            duration: 0.8,
+            ease: "bounce.out" // Bouncy effect when it lands
+          }
+        );
+      }, 1730); // 2 seconds delay for main heading
+    }
+
+    if (subHeading) {
+      // Wait 4 seconds before starting the subheading animation (sliding from right)
+      setTimeout(() => {
+        // Create timeline for subheading animation (sliding from right)
+        const subTl = gsap.timeline();
         
         // First part: quick slide from right with overshoot
-        tl.fromTo(heading, 
+        subTl.fromTo(subHeading, 
           { 
             x: "100%",  // Start position (from right)
             opacity: 0
@@ -33,12 +56,12 @@ export default function Hero() {
           }
         )
         // Second part: bounce back with elastic effect for sudden jerk feel
-        .to(heading, {
+        .to(subHeading, {
           x: "0%",     // Final resting position
           duration: 0.3,
           ease: "back.out(2.5)" // Creates that sudden stop/jerk effect
         });
-      }, 4000); // 3 seconds delay
+      }, 3700); // 4 seconds delay for subheading
     }
 
     // Parallax effect on scroll
@@ -81,26 +104,41 @@ export default function Hero() {
             className="h-0.5 bg-gradient-to-r from-indigo-400 to-purple-500 mx-auto mb-6"
           ></motion.div>
           
-          {/* Text container - initially invisible and will be animated with GSAP */}
+          {/* Main Heading - Falls from top */}
           <h1 
-            ref={textRef}
-            className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-8 leading-tight tracking-tighter text-white"
+            ref={mainHeadingRef}
+            className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-4 leading-tight tracking-tighter text-white"
             style={{ 
               fontFamily: "'Inter', sans-serif", 
               fontWeight: 800, 
               textWrap: 'wrap',
               opacity: 0, // Start invisible
+              transform: 'translateY(-100%)' // Start from top
+            }}
+          >
+            <span className="block z-1000">A new way </span>
+          </h1>
+          
+          {/* Subheading - Slides from right */}
+          <h2 
+            ref={subHeadingRef}
+            className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 leading-tight tracking-tight text-white"
+            style={{ 
+              fontFamily: "'Inter', sans-serif", 
+              fontWeight: 700, 
+              textWrap: 'wrap',
+              opacity: 0, // Start invisible
               transform: 'translateX(100%)' // Start from right
             }}
           >
-            <span className="block mb-2">A new way to explore college life</span>
-          </h1>
+            <span className="block mb-2 z-1000">to explore college life</span>
+          </h2>
           
           <motion.p 
-            className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto font-light leading-relaxed"
+            className="text-xl md:text-2xl z-1000 text-gray-300 mb-10 max-w-3xl mx-auto font-light leading-relaxed"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 4.1 }} // Delayed to appear after the heading animation completes
+            transition={{ duration: 0.8, delay: 5.3 }} // Delayed to appear after both headings
           >
             Get guidance about, campus life, entrance preparation, how to start coding and anything.
           </motion.p>
@@ -108,7 +146,7 @@ export default function Hero() {
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 4.4 }} // Delayed to appear after the paragraph
+            transition={{ duration: 0.8, delay: 5.6 }} // Delayed to appear after the paragraph
             className="flex flex-col sm:flex-row justify-center gap-4"
           >
             <button 

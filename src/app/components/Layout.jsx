@@ -38,7 +38,7 @@ export default function Layout({ children }) {
           </motion.div>
         </main>
 
-        <footer className="bg-gray-800 text-white py-12 px-4">
+        <footer className="bg-gray-800 text-white py-12 px-4 z-1000">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">Campus Loop</h3>
