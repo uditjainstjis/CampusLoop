@@ -32,7 +32,7 @@ export default function Home() {
     >
       <div className="w-full absolute z-10 flex justify-center items-center">
         <video
-          className="w-full rounded-xl"
+          className="w-full h-full rounded-xl"
           autoPlay
           loop
           muted

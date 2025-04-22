@@ -14,27 +14,31 @@ export default function Hero() {
     const heading = textRef.current;
     
     if (heading) {
-      const text = heading.innerText;
-      const characters = text.split('');
-      
-      heading.innerHTML = '';
-      characters.forEach((char, i) => {
-        const span = document.createElement('span');
-        span.innerText = char === ' ' ? '\u00A0' : char; // Keep non-breaking space for spaces
-        span.style.display = 'inline-block';
-        // Add initial vertical offset for animation if desired, or rely purely on GSAP's 'y'
-        // span.style.transform = 'translateY(20px)'; 
-        heading.appendChild(span);
-      });
-      
-      gsap.to(heading.children, {
-        opacity: 1,
-        y: 0, 
-        stagger: 0.05,
-        duration: 0.4,
-        ease: "power2.out",
-        delay: 0.3
-      });
+      // Wait 3 seconds before starting the animation
+      setTimeout(() => {
+        // Create timeline for more complex animation sequence
+        const tl = gsap.timeline();
+        
+        // First part: quick slide from right with overshoot
+        tl.fromTo(heading, 
+          { 
+            x: "100%",  // Start position (from right)
+            opacity: 0
+          }, 
+          {
+            x: "-10%",  // Overshoot to the left
+            opacity: 1,
+            duration: 1,
+            ease: "power2.in" // Fast acceleration
+          }
+        )
+        // Second part: bounce back with elastic effect for sudden jerk feel
+        .to(heading, {
+          x: "0%",     // Final resting position
+          duration: 0.3,
+          ease: "back.out(2.5)" // Creates that sudden stop/jerk effect
+        });
+      }, 4000); // 3 seconds delay
     }
 
     // Parallax effect on scroll
@@ -43,23 +47,17 @@ export default function Hero() {
       const handleScroll = () => {
         const scrollPosition = window.scrollY;
         const parallaxRate = scrollPosition * 0.4; // Adjust rate as needed
-        // Use GSAP for smoother transform updates (optional but recommended)
+        // Use GSAP for smoother transform updates
         gsap.to(container, { y: parallaxRate, ease: "none", duration: 0.1 });
-        // Or keep direct style manipulation:
-        // container.style.transform = `translateY(${parallaxRate}px)`;
       };
 
       window.addEventListener('scroll', handleScroll);
       return () => window.removeEventListener('scroll', handleScroll);
     }
-
-  // Add containerRef to dependency array if its value could ever change, 
-  // though for top-level refs it's usually stable. Adding it is safer.
   }, []); 
-  // Note: router is not needed in the dependency array for this useEffect
 
   return (
-    <section ref={containerRef} className="min-h-screen  flex flex-col items-center justify-center relative overflow-hidden">
+    <section ref={containerRef} className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
       {/* Modern gradient background with mesh pattern */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-indigo-900 to-gray-900 z-0"></div>
       
@@ -76,11 +74,55 @@ export default function Hero() {
           className="relative z-10 text-center max-w-5xl mx-auto"
         >
           {/* Subtle decorative line */}
-
+          <motion.div 
+            initial={{ width: 0 }}
+            animate={{ width: '120px' }}
+            transition={{ duration: 1.2, delay: 0.3 }}
+            className="h-0.5 bg-gradient-to-r from-indigo-400 to-purple-500 mx-auto mb-6"
+          ></motion.div>
+          
+          {/* Text container - initially invisible and will be animated with GSAP */}
+          <h1 
+            ref={textRef}
+            className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-8 leading-tight tracking-tighter text-white"
+            style={{ 
+              fontFamily: "'Inter', sans-serif", 
+              fontWeight: 800, 
+              textWrap: 'wrap',
+              opacity: 0, // Start invisible
+              transform: 'translateX(100%)' // Start from right
+            }}
+          >
+            <span className="block mb-2">A new way to explore college life</span>
+          </h1>
+          
+          <motion.p 
+            className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto font-light leading-relaxed"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 4.1 }} // Delayed to appear after the heading animation completes
+          >
+            Get guidance about, campus life, entrance preparation, how to start coding and anything.
+          </motion.p>
+          
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 4.4 }} // Delayed to appear after the paragraph
+            className="flex flex-col sm:flex-row justify-center gap-4"
+          >
+            <button 
+              onClick={() => router.push('/mentors')} 
+              className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-lg font-medium rounded-md hover:shadow-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 border border-indigo-500"
+              style={{ backdropFilter: 'blur(8px)' }}
+            >
+              Checkout Senior's
+            </button>
+          </motion.div>
         </motion.div>
       </div>
       
-      {/* Modern geometric elements - Keep as is */}
+      {/* Modern geometric elements */}
       <motion.div 
         className="absolute top-1/4 -left-12 w-40 h-40 rounded-full bg-gradient-to-r from-indigo-600/20 to-purple-600/20 blur-xl z-0"
         animate={{ 
@@ -94,8 +136,7 @@ export default function Hero() {
           ease: "easeInOut" 
         }}
       />
-      {/* ... other motion divs ... */}
-       <motion.div 
+      <motion.div 
         className="absolute bottom-1/4 -right-12 w-56 h-56 rounded-full bg-gradient-to-l from-indigo-600/20 to-purple-600/20 blur-xl z-0"
         animate={{ 
           y: [0, 30, 0],
