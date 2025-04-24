@@ -10,7 +10,7 @@ import { authOptions } from '../../../lib/auth.config'; // Assuming your auth op
 // --- GET Request Handler (Existing Code - slightly modified session check) ---
 export async function GET(request, { params }) {
   const { id } = params;
-  const session = await getServerSession(req, res, authOptions); // Use authOptions
+  // const session = await getServerSession(req, res, authOptions); // Use authOptions
 
   // Optional: Uncomment if you want GET requests to be protected too
   // if (!session || !session.user) {
@@ -59,17 +59,17 @@ export async function GET(request, { params }) {
 // --- PUT Request Handler (New Code for Updates) ---
 export async function PUT(request, { params }) {
   const { id } = params;
-  const session = await getServerSession(authOptions); // Use authOptions
+  // const session = await getServerSession(authOptions); // Use authOptions
 
   // --- Authentication Check ---
   // IMPORTANT: Protect your update endpoint.
   // You might want more granular checks here (e.g., is the user an admin?)
-  if (!session || !session.user /* || !session.user.isAdmin */) { // Add admin check if needed
-    return NextResponse.json(
-      { message: "Unauthorized: You must be logged in (and potentially an admin) to update mentors." },
-      { status: 401 }
-    );
-  }
+  // if (!session || !session.user /* || !session.user.isAdmin */) { // Add admin check if needed
+  //   return NextResponse.json(
+  //     { message: "Unauthorized: You must be logged in (and potentially an admin) to update mentors." },
+  //     { status: 401 }
+  //   );
+  // }
   // --- End Authentication Check ---
 
   // Validate ID format

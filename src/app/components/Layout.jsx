@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import Head from 'next/head';
 import Navbar from './Navbar';
 import { motion } from 'framer-motion';
+import CustomCursor from './CustomCursor';
 
 export default function Layout({ children }) {
   useEffect(() => {
@@ -25,6 +26,8 @@ export default function Layout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
+
+      <CustomCursor/>
 
       <div className="min-h-screen flex flex-col">
         <Navbar />

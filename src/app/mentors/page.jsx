@@ -2,311 +2,326 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Head from 'next/head';
-import { motion, AnimatePresence } from 'framer-motion';
+// import Head from 'next/head'; // DEPRECATED in App Router
+import { motion, AnimatePresence } from 'framer-motion'; // Import AnimatePresence
+import Image from 'next/image';
 import Link from 'next/link';
-import MentorCard from '../components/MentorCard';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation'; // Not used in the final render logic here, can be removed if not needed elsewhere
+import MentorCard from '../components/MentorCard'; // Import the reusable component
 
-// Default/Fallback Data
-const DEFAULT_MENTORS = [
+// --- Metadata for App Router ---
+// export const metadata = {
+//   title: 'Our Mentors | Mentor Match',
+//   description: 'Discover experienced mentors ready to help you grow.',
+// };
+// Note: Add this metadata object outside the component if you prefer static metadata.
+// If you need dynamic metadata, define a generateMetadata function.
+// For simplicity here, we'll remove the old <Head> and note how to add static metadata.
+
+// Predefined star positions for consistent server/client rendering
+const STAR_POSITIONS = Array.from({ length: 50 }).map((_, i) => ({
+  top: `${(i * 7.3 + i*0.1) % 100}%`, // Added small offset
+  left: `${(i * 13.7 + i*0.2) % 100}%`, // Added small offset
+  opacity: 0.3 + (i % 7) * 0.1,
+  scale: 0.5 + (i % 5) * 0.1,
+  // animationDelay will be handled by stagger in motion.div if needed
+}));
+
+// First row of mentors data - Moved data outside the component
+const FIRST_ROW_MENTORS = [
   {
-    id: 'default-1',
-    name: 'Default Mentor 1',
-    achievement: 'Example Achievement',
-    imageUrl: '/images/default-mentor-1.jpg',
-    skills: ['React', 'JavaScript'],
+    id: "m1",
+    name: "Anuj Singhal",
+    achievement: "MoveIn Sync Intern",
+    imageUrl: "/img3.jpeg",
   },
+  {
+    id: "m2",
+    name: "Priya Sharma",
+    achievement: "UX Designer at Google",
+    imageUrl: "/img1.jpeg",
+  },
+  {
+    id: "m3",
+    name: "Rahul Verma",
+    achievement: "Software Engineer at Microsoft",
+    imageUrl: "/img2.jpeg",
+  },
+  {
+    id: "m4",
+    name: "Nisha Patel",
+    achievement: "Product Manager at Amazon",
+    imageUrl: "/img4.jpeg",
+  },
+  {
+    id: "m5",
+    name: "Vikram Singh",
+    achievement: "Data Scientist at Netflix",
+    imageUrl: "/img5.jpeg",
+  }
 ];
 
-export default function MentorsListPage() {
-  const [allMentors, setAllMentors] = useState([]);
-  const [filteredMentors, setFilteredMentors] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+// Second row of mentors data - Moved data outside the component
+const SECOND_ROW_MENTORS = [
+  {
+    id: "m6",
+    name: "Sanya Malhotra",
+    achievement: "Frontend Developer at Meta",
+    imageUrl: "/img6.jpeg",
+  },
+  {
+    id: "m7",
+    name: "Arjun Kumar",
+    achievement: "Backend Engineer at Twitter",
+    imageUrl: "/img7.jpeg",
+  },
+  {
+    id: "m8",
+    name: "Meera Kapoor",
+    achievement: "ML Engineer at Apple",
+    imageUrl: "/img8.jpeg",
+  },
+  {
+    id: "m9",
+    name: "Karan Mehta",
+    achievement: "UI Designer at Adobe",
+    imageUrl: "/img9.jpeg",
+  },
+  {
+    id: "m10",
+    name: "Neha Gupta",
+    achievement: "Tech Lead at Spotify",
+    imageUrl: "/img10.jpeg",
+  }
+];
+
+// Main page component - Renamed to 'Page' for App Router convention
+export default function Page() { // Renamed from MentorsListPage to Page
   const [isLoading, setIsLoading] = useState(true);
-  const [statusMessage, setStatusMessage] = useState(null);
-  const [hasSearched, setHasSearched] = useState(false);
-  const router = useRouter();
+  // const router = useRouter(); // Removed as it's not used here
 
-  // Animation variants for staggered children
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-  };
-  
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 260,
-        damping: 20,
-      }
-    },
-  };
-
-  // Fetch mentors on component mount
+  // Simulate loading
   useEffect(() => {
-    const fetchMentors = async () => {
-      setIsLoading(true);
-      setStatusMessage(null);
-      try {
-        const response = await fetch('/api/mentors');
-        if (!response.ok) {
-          if(response.status === 401){
-            router.push('/signin');
-            return;
-          } else {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-        }
-        const mentorsData = await response.json();
-
-        if (!mentorsData || mentorsData.length === 0) {
-          console.warn('API returned successfully but with no mentor data.');
-          setAllMentors([]);
-          setFilteredMentors([]);
-          setStatusMessage('No mentors found.');
-        } else {
-          setAllMentors(mentorsData);
-          setFilteredMentors(mentorsData);
-        }
-      } catch (e) {
-        console.error('Error fetching mentors:', e);
-        setStatusMessage('Failed to load mentors. Please try again later.');
-        setAllMentors([]);
-        setFilteredMentors([]);
-      } finally {
+    const simulateFetch = () => {
+      setTimeout(() => {
         setIsLoading(false);
-      }
+      }, 1000);
     };
 
-    fetchMentors();
-  }, [router]);
+    simulateFetch();
+  }, []);
 
-  // Filter mentors by search term
-  useEffect(() => {
-    let result = [...allMentors];
-
-    if (searchTerm) {
-      setHasSearched(true);
-      const term = searchTerm.toLowerCase();
-      result = result.filter(mentor =>
-        mentor.name.toLowerCase().includes(term) ||
-        (mentor.achievement && mentor.achievement.toLowerCase().includes(term)) ||
-        mentor.skills.some(skill => skill.toLowerCase().includes(term))
-      );
-    } else {
-      setHasSearched(false);
-    }
-
-    setFilteredMentors(result);
-  }, [searchTerm, allMentors]);
+  // If you want static metadata, define it outside and uncomment the import above
+  // If you need dynamic metadata based on props (e.g., search params),
+  // use the generateMetadata function instead.
 
   return (
     <>
-      <Head>
-        <title>Our Mentors | Mentor Match</title>
-        <meta name="description" content="Discover experienced mentors ready to help you grow." />
-      </Head>
+      {/* Metadata goes here in App Router via export const metadata or generateMetadata */}
+      {/* No <Head> tag needed directly in component */}
 
-      {/* Hero Section with Animated Background */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-indigo-100 via-white to-purple-50 text-gray-800 border-b border-gray-200">
-        {/* Animated background elements */}
+      {/* Hero Section with Space Theme */}
+      <div className="relative bg-gradient-to-b mt-12 from-purple-950 via-purple-900 to-indigo-900 text-white overflow-hidden">
+        {/* Animated stars background - WITH FIXED POSITIONS */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -left-10 -top-10 w-40 h-40 rounded-full bg-blue-500/5"></div>
-          <div className="absolute right-0 top-0 w-80 h-80 rounded-full bg-purple-500/5"></div>
-          <div className="absolute left-1/4 bottom-0 w-60 h-60 rounded-full bg-indigo-500/5"></div>
-          
-          {/* Animated dots */}
-          {[...Array(6)].map((_, i) => (
-            <motion.div 
+          {STAR_POSITIONS.map((star, i) => (
+            <motion.div
               key={i}
-              className="absolute w-2 h-2 rounded-full bg-indigo-500/20"
+              className="absolute w-1 h-1 bg-white rounded-full"
               style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
+                top: star.top,
+                left: star.left,
+                opacity: star.opacity,
+                scale: star.scale,
               }}
               animate={{
-                y: [0, 10, 0],
-                opacity: [0.7, 0.2, 0.7],
-                scale: [1, 1.2, 1],
+                opacity: [star.opacity, star.opacity + 0.3, star.opacity],
+                scale: [star.scale, star.scale * 1.3, star.scale],
               }}
               transition={{
-                duration: 5 + (i * 2),
+                duration: 3,
                 repeat: Infinity,
-                ease: "easeInOut",
+                repeatType: "reverse",
+                delay: i % 5 * 0.2, // Stagger delay for stars
               }}
             />
           ))}
         </div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 py-20 sm:px-6 lg:px-8 text-center">
-          <motion.h1 
-            className="text-4xl md:text-5xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700"
+
+        {/* Large planet - Fixed position */}
+        <motion.div
+          className="absolute right-0 bottom-0 w-64 h-64 translate-x-1/4 translate-y-1/4 rounded-full bg-gradient-to-br from-purple-400 to-purple-700 opacity-20"
+          animate={{
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
+
+        {/* Small planet - Fixed position */}
+        <motion.div
+          className="absolute top-20 left-0 w-32 h-32 -translate-x-1/2 rounded-full bg-gradient-to-br from-indigo-300 to-purple-500 opacity-10"
+          animate={{
+            y: [0, 10, 0],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
+
+        {/* Orbit rings - Fixed positions */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <motion.div
+            className="absolute w-96 h-96 border border-purple-300/10 rounded-full"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          />
+
+          <motion.div
+            className="absolute w-64 h-64 -translate-x-1/2 -translate-y-1/2 border border-indigo-300/10 rounded-full"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 text-center">
+          <motion.h1
+            className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-200 via-white to-indigo-200"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            Find Your Mentor
+            Explore Mentors
           </motion.h1>
-          
-          <motion.p 
-            className="text-lg md:text-xl max-w-3xl mx-auto mb-12 text-gray-600"
+
+          <motion.p
+            className="text-lg max-w-3xl mx-auto mb-6 text-purple-100"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
-            Connect with industry experts to accelerate your career growth.
+            Find the perfect guide for your professional journey
           </motion.p>
-          
-          {/* Search bar with animated focus effects */}
-          <motion.div 
-            className="max-w-2xl mx-auto"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <div className="relative group">
-              <input
-                type="text"
-                placeholder="Search by name, achievement or skill..."
-                className="w-full px-6 py-4 rounded-full text-gray-800 bg-white/80 backdrop-blur-sm border border-gray-200 shadow-sm
-                        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent
-                        placeholder-gray-400 transition-all duration-300"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              
-              {/* Animated search icon */}
-              <motion.div 
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"
-                animate={{
-                  scale: searchTerm ? 1.2 : 1,
-                  color: searchTerm ? "#4F46E5" : "#9CA3AF",
-                }}
-                transition={{ duration: 0.2 }}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </motion.div>
-              
-              {/* Clear search button - appears when search has content */}
-              {searchTerm && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="absolute right-14 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
-                  onClick={() => setSearchTerm('')}
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </motion.button>
-              )}
-            </div>
-          </motion.div>
         </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          {/* Loading State */}
-          <AnimatePresence>
-            {isLoading && (
-              <motion.div 
-                className="text-center py-16"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+      <div className="min-h-screen py-8 bg-gradient-to-b from-indigo-50 to-white">
+        {/* Loading State */}
+        <AnimatePresence mode="wait"> {/* Added mode="wait" */}
+          {isLoading && (
+            <motion.div
+              key="loading" // <-- ADDED KEY HERE
+              className="text-center py-16"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div
+                className="inline-block w-24 h-24 relative"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
               >
-                <p className="text-lg text-gray-500 mb-4">Loading mentors...</p>
-                <motion.div 
-                  className="inline-block h-12 w-12 rounded-full border-4 border-indigo-500/30 border-t-indigo-600"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
-                />
+                <div className="absolute inset-0 rounded-full border-4 border-purple-200 border-dashed"></div>
+                <div className="absolute top-1/2 left-1/2 w-6 h-6 rounded-full bg-purple-600 transform -translate-x-1/2 -translate-y-1/2"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full border-t-4 border-r-4 border-purple-600 animate-spin"></div>
+                </div>
               </motion.div>
-            )}
-          </AnimatePresence>
+              <p className="text-lg text-purple-800 mt-6 font-medium">Searching across the universe...</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-          {/* Status Message */}
-          <AnimatePresence>
-            {!isLoading && statusMessage && (
-              <motion.div 
-                className="text-center py-4 px-4 mb-6 bg-yellow-50 border border-yellow-300 text-yellow-800 rounded-lg shadow-sm"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
-                <p className="text-sm font-medium">{statusMessage}</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Mentor Grid */}
-          <AnimatePresence>
-            {!isLoading && (
-              <>
-                {filteredMentors.length === 0 && !statusMessage ? (
-                  <motion.div 
-                    className="text-center py-16 bg-white border border-gray-200 rounded-lg shadow-sm"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <svg className="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2m8-10a4 4 0 100-8 4 4 0 000 8zm10 10l-4.35-4.35M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <h3 className="mt-4 text-lg font-medium text-gray-900">No Mentors Found</h3>
-                    <p className="mt-2 text-sm text-gray-500">We couldn't find any mentors matching your search criteria.</p>
-                    {hasSearched && (
-                      <motion.button
-                        onClick={() => setSearchTerm('')}
-                        className="mt-6 px-6 py-2 bg-indigo-600 text-white text-sm font-medium rounded-full hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-300"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Clear Search
-                      </motion.button>
-                    )}
-                  </motion.div>
-                ) : (
-                  <motion.div 
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                    variants={container}
+        {/* Content when not loading */}
+        {/* Changed the second AnimatePresence */}
+        {!isLoading && ( // Render this motion.div directly when not loading
+            <motion.div
+              key="content" // <-- ADDED KEY HERE
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              // Removed exit here, as it's handled by the first AnimatePresence when isLoading becomes true again
+              transition={{ duration: 0.5 }}
+              className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+            >
+              {/* First Row of Mentors */}
+              <div className="mb-12">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-medium text-gray-900"> Super Senior's !</h2>
+                </div>
+                <div className="overflow-x-auto pb-6 hide-scrollbar">
+                  <motion.div
+                    className="flex gap-6 min-w-min"
                     initial="hidden"
-                    animate="show"
+                    animate="visible"
+                    variants={{
+                      visible: { transition: { staggerChildren: 0.05 } },
+                      hidden: {},
+                    }}
                   >
-                    {filteredMentors.map((mentor, index) => (
+                    {FIRST_ROW_MENTORS.map((mentor) => (
                       <motion.div
                         key={mentor.id}
-                        className="h-full"
-                        variants={item}
+                        variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 20 } }}
+                        className="w-[450px] flex-shrink-0"
                       >
-                        <Link href={`/mentors/${mentor.id}`} className="block h-full">
-                          <MentorCard mentor={mentor} />
-                        </Link>
+                         <Link href={`/mentors/${mentor.id}`} className="block h-full">
+                            <MentorCard mentor={mentor} />
+                         </Link>
                       </motion.div>
                     ))}
                   </motion.div>
-                )}
-              </>
-            )}
-          </AnimatePresence>
-        </div>
+                </div>
+              </div>
+
+              {/* Second Row of Mentors */}
+              <div className="mb-16">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-medium text-gray-900">Senior's !</h2>
+                </div>
+                 <div className="overflow-x-auto pb-6 hide-scrollbar">
+                  <motion.div
+                    className="flex gap-6 min-w-min"
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      visible: { transition: { staggerChildren: 0.05 } },
+                      hidden: {},
+                    }}
+                  >
+                    {SECOND_ROW_MENTORS.map((mentor) => (
+                      <motion.div
+                        key={mentor.id}
+                        variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 20 } }}
+                        className="w-[450px] flex-shrink-0"
+                      >
+                         <Link href={`/mentors/${mentor.id}`} className="block h-full">
+                            <MentorCard mentor={mentor} />
+                         </Link>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* CSS for hiding scrollbar but keeping scroll functionality */}
+              <style jsx global>{`
+                .hide-scrollbar {
+                  scrollbar-width: none;
+                  -ms-overflow-style: none;
+                }
+                .hide-scrollbar::-webkit-scrollbar {
+                  display: none;
+                }
+              `}</style>
+            </motion.div>
+          )}
       </div>
     </>
   );

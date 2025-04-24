@@ -78,7 +78,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-500 ${ // Navbar has z-50
+      className={`fixed w-full z-[10000] transition-all duration-500 ${ // Navbar has z-50
         scrolled
           ? 'py-3 backdrop-blur-xl bg-zinc-900/60 shadow-lg shadow-black/20'
           : 'py-5 backdrop-blur-md bg-zinc-900/40'

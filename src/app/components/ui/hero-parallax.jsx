@@ -61,10 +61,10 @@ export const Header = () => {
   return (
     <div
       className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full  left-0 top-0">
-      <h1 className="text-2xl md:text-7xl font-bold dark:text-white">
+      <h1 className="text-2xl md:text-7xl font-bold  ">
         Get Guidance <br /> from Your Seniors
       </h1>
-      <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
+      <p className="max-w-2xl text-base md:text-xl mt-8 ">
       Connect with your seniors to ask anything about academics, campus life, placements, or extracurriculars. They’ve been through it all and can offer valuable advice—from choosing the right subjects to managing your time better. Whether it’s study tips, internship guidance, or just finding your way around campus, don’t hesitate to reach out and learn from their experience.
       </p>
     </div>
