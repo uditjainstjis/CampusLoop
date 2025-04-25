@@ -15,17 +15,16 @@ const EnhancedCursor = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   // Define greetings in different languages
-  const greetings = [
-    { text: "Hi !"},
-    { text: "नमस्ते !"},
-    { text: "Hola !" },
-    { text: "Bonjour !"},
-    { text: "こんにちは !"},
-    { text: "안녕하세요 !"},
-    { text: "Ciao !"},
-    { text: "你好 !" }
-  ];
 
+  const greetings = [
+    { text: 'Hello 👋' },         // English
+    { text: 'नमस्ते 🙏' },         // Hindi
+    { text: 'नमस्कार 🌸' },        // Marathi
+    { text: 'నమస్తే 🎉' },         // Telugu
+    { text: 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ 🙌' }    // Punjabi
+  ];
+  
+  
   useEffect(() => {
     // Mouse position variables
     let cursorX = 0;

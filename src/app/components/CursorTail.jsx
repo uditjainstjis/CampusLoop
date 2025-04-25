@@ -4,8 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 
 const greetings = [
-  'Hello 👋', 'Namaste 🙏', 'Hola 🌞', 'Bonjour 🥐', 'Ciao 🍕',
-  'こんにちは 🗾', '안녕하세요 🎌', 'Hallo 🍺', 'Salam 🕌', 'Hej 🇸🇪'
+  'Hello 👋',
+  'Namaste 🙏',
+  'Hola 🌞',
+  'Bonjour 🥐',
+  'નમસ્કાર 🪔', 
+  'నమస్తే 🎉'     
 ];
 
 export default function CursorGreeting() {

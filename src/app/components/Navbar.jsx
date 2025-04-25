@@ -77,8 +77,14 @@ export default function Navbar() {
   };
 
   return (
+<<<<<<< HEAD
     <nav
       className={`fixed w-full z-[10000] transition-all duration-500 ${ // Navbar has z-50
+=======
+    <div className={'flex justify-center z-[10000]'}>
+      <nav
+      className={`fixed w-7xl z-50 transition-all duration-500 ${ // Navbar has z-50
+>>>>>>> a23da75 (languagechange)
         scrolled
           ? 'py-3 backdrop-blur-xl bg-zinc-900/60 shadow-lg shadow-black/20'
           : 'py-5 backdrop-blur-md bg-zinc-900/40'
@@ -186,7 +192,7 @@ export default function Navbar() {
             animate="visible"
             exit="exit"
           >
-            <div className="px-5 pt-6 pb-8 flex flex-col space-y-6"> {/* Adjusted padding */}
+            <div className="px-5 pt-6 pb-8 flex flex-col z-[10000] space-y-6"> {/* Adjusted padding */}
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
@@ -211,7 +217,7 @@ export default function Navbar() {
 
               <motion.div
                 variants={menuItemVariants} // Apply item animation variants here
-                className="px-4 pt-4" // Adjusted padding
+                className="px-4 pt-4 z-[10000]" // Adjusted padding
               >
                 <Link
                   href={ctaLink.href}

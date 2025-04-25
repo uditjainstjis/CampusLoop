@@ -151,7 +151,7 @@ export default function Hero() {
           >
             <button 
               onClick={() => router.push('/mentors')} 
-              className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-lg font-medium rounded-md hover:shadow-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 border border-indigo-500"
+              className="px-8 py-4 bg-gradient-to-r z-[99999] from-indigo-600 to-purple-600 text-white text-lg font-medium rounded-md hover:shadow-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 border border-indigo-500"
               style={{ backdropFilter: 'blur(8px)' }}
             >
               Checkout Senior's
