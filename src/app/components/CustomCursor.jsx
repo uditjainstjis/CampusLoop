@@ -21,8 +21,9 @@ const EnhancedCursor = () => {
     { text: 'नमस्ते 🙏' },         // Hindi
     { text: 'नमस्कार 🌸' },        // Marathi
     { text: 'నమస్తే 🎉' },         // Telugu
-    { text: 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ 🙌' }    // Punjabi
+    { text: 'ਹੈਲੋ 👋' }            // Punjabi (neutral)
   ];
+  
   
   
   useEffect(() => {

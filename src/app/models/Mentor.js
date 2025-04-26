@@ -28,11 +28,6 @@ const MentorSchema = new mongoose.Schema({
     default: '',
     trim: true,
   },
-  skills: {
-    type: [String],
-    required: [true, 'Please provide at least one skill.'],
-    validate: [val => Array.isArray(val) && val.length > 0, 'Please provide at least one skill.']
-  },
   about: {
     type: String,
     required: [true, 'Please describe the mentor.'],

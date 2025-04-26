@@ -77,14 +77,8 @@ export default function Navbar() {
   };
 
   return (
-<<<<<<< HEAD
     <nav
       className={`fixed w-full z-[10000] transition-all duration-500 ${ // Navbar has z-50
-=======
-    <div className={'flex justify-center z-[10000]'}>
-      <nav
-      className={`fixed w-7xl z-50 transition-all duration-500 ${ // Navbar has z-50
->>>>>>> a23da75 (languagechange)
         scrolled
           ? 'py-3 backdrop-blur-xl bg-zinc-900/60 shadow-lg shadow-black/20'
           : 'py-5 backdrop-blur-md bg-zinc-900/40'
