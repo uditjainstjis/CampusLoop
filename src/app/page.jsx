@@ -51,7 +51,7 @@ export default function Home() {
 
       {/* This div pushes content down, acting as a spacer below the absolute video */}
       {/* Adjust height as needed based on your Hero/Video layout */}
-      <div className="w-full h-[100vh] relative z-0"> {/* Example: Make spacer fill viewport height */}
+      <div className="w-full h-[50vh] sm:h-[100vh] relative z-0"> {/* Example: Make spacer fill viewport height */}
          {/* Or adjust height based on Hero content */}
       </div>
 
