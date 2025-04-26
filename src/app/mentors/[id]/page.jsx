@@ -1,13 +1,30 @@
+// src/app/mentors/[id]/page.jsx
 'use client'
 
-import { useState, useEffect } from 'react'; //Import useEffect
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { Button } from "@components/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@components/components/ui/avatar";
-import { CalendarDays, MessageSquare, User, Code, BookOpen, HelpCircle, CheckCircle } from "lucide-react";
+import { CalendarDays, MessageSquare, User, Code, BookOpen, HelpCircle } from "lucide-react";
 
-const MentorProfile = ({ mentor }) => {
+const MentorProfile = () => {
+
+  // Static Mentor Data (replace with your actual data source later)
+  const mentor = {
+    name: "Aman Kumar",
+    rate: 50,
+    skills: ["JavaScript", "React", "Node.js", "Next.js"],
+    help: ["Frontend Development", "Backend Development", "Fullstack Architecture", "Code Review"],
+    about: "Experienced full-stack developer with a passion for building scalable and maintainable web applications.  I enjoy helping others learn and grow in their careers.",
+    availability: [
+      { date: "2024-07-08", startTime: "10:00", endTime: "10:30" },
+      { date: "2024-07-09", startTime: "14:00", endTime: "14:30" },
+      { date: "2024-07-10", startTime: "16:00", endTime: "16:30" },
+      { date: "2024-07-11", startTime: "11:00", endTime: "11:30" },
+    ],
+  };
+
+
   // State to hold the string identifier of the selected slot
   const [selectedSlot, setSelectedSlot] = useState(null);
   // State to track booking step
@@ -130,7 +147,7 @@ const MentorProfile = ({ mentor }) => {
           transition={{ delay: 0.4, duration: 0.5 }}
           className="text-center"
         >
-          <h1 className="text-3xl font-bold mb-2 text-center px-4">Aman Kumar</h1>
+          <h1 className="text-3xl font-bold mb-2 text-center px-4">{mentor.name}</h1>
           <p className="text-sm mb-4 text-center opacity-90 px-4">DRDO Intern</p>
 
           {/* Animated divider */}
@@ -151,7 +168,7 @@ const MentorProfile = ({ mentor }) => {
             className="flex items-center gap-2 bg-white/10 px-5 py-2 rounded-full mb-6"
           >
             <CalendarDays className="w-5 h-5 text-purple-200" />
-            <span className="font-medium">{formatPrice(mentor.rate)}</span>
+            <span className="font-medium">{formatPrice(50)}</span>
             <span className="text-sm opacity-90">/ Session</span>
           </motion.div>
         )}
