@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <motion.main className="overflow-hidden">
       {/* Consider adding pointer-events-none if this overlay shouldn't block interactions */}
-      <div className="w-full absolute z-10 sm:block hidden flex justify-center items-center pointer-events-none">
+      <div className="w-full absolute z-1 sm:block hidden flex justify-center items-center pointer-events-none">
         {/* It might be better to control size/position on this container */}
         <div className="w-full h-full relative mr-32 md:mr-12 xl:mt-0 md:mt-[15vw] mt-[65vw] sm:mt-[30vw] lg:mt-[10vw]"> {/* Added relative container for positioning context if needed */}
           <video

@@ -4,68 +4,72 @@ import Link from 'next/link';
 import { HeroParallax } from "../components/ui/hero-parallax";
 const mockMentors = [
   {
+    id: "mentor-4",
+    name: "Diana Davis",
+    achievement: "Data Scientist & AI Researcher",
+    imageUrl: "/Pranav.jpeg",
+  },
+  {
     id: "mentor-1", // Unique key/id
     name: "Mehak Jain",
     achievement: "Lead Developer @ TechCorp",
-    imageUrl: "/img1.jpeg",
+    imageUrl: "/Mehak.JPG",
   },
   {
     id: "mentor-2",
     name: "Bob Williams",
     achievement: "Marketing Director | Forbes 30 Under 30",
-    imageUrl: "/img2.jpeg",
-
+    imageUrl: "/Manshu.JPG",
+    
   },
   {
     id: "mentor-3",
     name: "Charlie Brown",
     achievement: "Senior UX Designer at CreateCo",
-    imageUrl: "/img3.jpeg",
+    imageUrl: "/Udita.JPG",
 
-  },
-  {
-    id: "mentor-4",
-    name: "Diana Davis",
-    achievement: "Data Scientist & AI Researcher",
-    imageUrl: "/img4.jpeg",
   },
   {
     id: "mentor-5",
     name: "Ethan Miller",
     achievement: "Venture Capitalist",
-    imageUrl: "/img5.jpeg",
+    imageUrl: "/Priyanshu.PNG",
   },
   {
     id: "mentor-6", // Unique key/id
     name: "Mehak Jain",
     achievement: "Lead Developer @ TechCorp",
-    imageUrl: "/img2.jpeg",
+    imageUrl: "/Pranav.jpeg",
+
   },
   {
     id: "mentor-7",
     name: "Bob Williams",
     achievement: "Marketing Director | Forbes 30 Under 30",
-    imageUrl: "/img5.jpeg",
+    imageUrl: "/Priyanshu.PNG",
+
 
   },
   {
     id: "mentor-8",
     name: "Charlie Brown",
     achievement: "Senior UX Designer at CreateCo",
-    imageUrl: "/img1.jpeg",
+    imageUrl: "/Mehak.JPG",
 
   },
   {
     id: "mentor-9",
     name: "Diana Davis",
     achievement: "Data Scientist & AI Researcher",
-    imageUrl: "/img4.jpeg",
+    imageUrl: "/Udita.JPG",
+
   },
   {
     id: "mentor-10",
     name: "Ethan Miller",
     achievement: "Venture Capitalist",
-    imageUrl: "/img1.jpeg",
+    imageUrl: "/Manshu.JPG",
+
   },
   
 ];
