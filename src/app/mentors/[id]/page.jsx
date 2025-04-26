@@ -14,8 +14,8 @@ const MentorProfile = () => {
     name: "Aman Kumar",
     rate: 50,
     skills: ["JavaScript", "React", "Node.js", "Next.js"],
-    help: ["Frontend Development", "Backend Development", "Fullstack Architecture", "Code Review"],
-    about: "Experienced full-stack developer with a passion for building scalable and maintainable web applications.  I enjoy helping others learn and grow in their careers.",
+    help: ["Telling place for hangout's", "Telling about campus life"],
+    about: "I love traveling and attending conferences & exhibitions I like to learn challenging things",
     availability: [
       { date: "2024-07-08", startTime: "10:00", endTime: "10:30" },
       { date: "2024-07-09", startTime: "14:00", endTime: "14:30" },
@@ -173,30 +173,6 @@ const MentorProfile = () => {
           </motion.div>
         )}
 
-        {/* Skills Section */}
-        {mentor?.skills && mentor.skills.length > 0 && (
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            className="mt-4 w-full text-left px-4"
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <Code className="w-4 h-4 text-purple-200" />
-              <h3 className="text-sm uppercase tracking-wide opacity-80">Skills</h3>
-            </div>
-            <div className="flex flex-wrap gap-2 mb-6">
-              {mentor.skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className="text-xs bg-white/10 px-3 py-1 rounded-full"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        )}
 
         {/* Help Section */}
         {mentor?.help && mentor.help.length > 0 && (
@@ -208,7 +184,7 @@ const MentorProfile = () => {
           >
             <div className="flex items-center gap-2 mb-3">
               <HelpCircle className="w-4 h-4 text-purple-200" />
-              <h3 className="text-sm uppercase tracking-wide opacity-80">Can Help With</h3>
+              <h3 className="text-sm uppercase tracking-wide opacity-80">Can Help With 😉</h3>
             </div>
             <ul className="list-disc list-inside text-sm space-y-1 opacity-90 pl-1">
               {mentor.help.map((item, index) => (
@@ -384,7 +360,10 @@ const MentorProfile = () => {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="mt-8 bg-white rounded-xl p-6 shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300"
           >
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">Have a question?</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">Have a question?<span className="absolute right-20 text-sm font-semibold text-transparent bg-clip-text wave-text">
+                      Coming Soon...
+                    </span>
+</h2>
             <div className="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
               <div className="flex items-center gap-3 text-gray-700">
                 <MessageSquare className="w-5 h-5 text-gray-500" />

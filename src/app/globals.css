@@ -232,3 +232,19 @@ a, button {
     @apply bg-background text-foreground;
   }
 }
+
+.wave-text {
+  background-image: linear-gradient(90deg, #a855f7, #f472b6, #38bdf8, #a855f7);
+  background-size: 200% auto;
+  animation: colorWave 3s linear infinite;
+
+}
+
+@keyframes colorWave {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

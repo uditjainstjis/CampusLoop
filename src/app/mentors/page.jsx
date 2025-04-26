@@ -125,7 +125,7 @@ export default function Page() {
                   <div className="w-16 h-16 rounded-full border-t-4 border-r-4 border-purple-600 animate-spin"></div>
                 </div>
               </motion.div>
-              <p className="text-lg text-purple-800 mt-6 font-medium">Searching across the universe...</p>
+              <p className="text-lg text-purple-800 mt-6 font-medium">Searching across the college...</p>
             </motion.div>
           )}
         </AnimatePresence>
