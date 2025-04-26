@@ -4,6 +4,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const EnhancedCursor = () => {
+  if (typeof window !== 'undefined' && window.innerWidth < 768) return null;
+
   // Use refs to store DOM elements
   const cursorRef = useRef(null);
   const textBoxRef = useRef(null);

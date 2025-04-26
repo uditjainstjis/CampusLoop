@@ -41,12 +41,12 @@ export default function Layout({ children }) {
           </motion.div>
         </main>
 
-        <footer className="bg-gray-800 text-white py-12 px-4 z-1000">
+        <footer className="bg-gray-800 text-white py-12 px-4 ">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">Campus Loop</h3>
               <p className="text-gray-300 mb-4">
-                Connecting aspiring professionals with industry experts for personalized mentorship.
+                Connecting future junior's of the college to their present senior's for any help regarding college or something 😉
               </p>
             </div>
 

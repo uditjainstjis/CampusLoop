@@ -31,6 +31,7 @@ const SECOND_ROW_MENTORS = [
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const simulateFetch = () => {
@@ -40,6 +41,18 @@ export default function Page() {
     };
 
     simulateFetch();
+
+    // Function to detect screen size
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Adjust breakpoint as needed
+    };
+
+    // Initial check and event listener for screen size changes
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
@@ -142,11 +155,11 @@ export default function Page() {
             {/* Super Seniors Section */}
             <section className="mb-12">
               <h2 className="text-2xl font-medium text-gray-900 mb-6">Super Seniors!</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> {/* Added grid layout */}
+              <div className={` ${isMobile ? 'flex flex-row overflow-x-auto snap-x snap-mandatory' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'} gap-6`}>
                 {FIRST_ROW_MENTORS.map(mentor => (
                   <motion.div
                     key={mentor.id}
-                    className="w-full" // Adjusted width
+                    className={`${isMobile ? 'snap-start shrink-0 w-64' : 'w-full'}`}
                     variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 20 } }}
                     initial="hidden"
                     animate="visible"
@@ -163,11 +176,11 @@ export default function Page() {
             {/* Seniors Section */}
             <section className="mb-12">
               <h2 className="text-2xl font-medium text-gray-900 mb-6">Seniors!</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> {/* Added grid layout */}
+              <div className={` ${isMobile ? 'flex flex-row overflow-x-auto snap-x snap-mandatory' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'} gap-6`}>
                 {SECOND_ROW_MENTORS.map(mentor => (
                   <motion.div
                     key={mentor.id}
-                    className="w-full" // Adjusted width
+                    className={`${isMobile ? 'snap-start shrink-0 w-64' : 'w-full'}`}
                     variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 20 } }}
                     initial="hidden"
                     animate="visible"
