@@ -84,7 +84,7 @@ export const ProductCard = ({
         y: -20,
       }}
       key={product.title}
-      className="group/product h-48 sm:h-96 w-[15rem] relative shrink-0">
+      className="group/product h-48 sm:h-96 w-[15rem] sm:w-[30rem] relative shrink-0">
 
         <Image
           src={product.thumbnail}
