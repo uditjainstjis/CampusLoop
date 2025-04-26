@@ -19,7 +19,7 @@ const EnhancedCursor = () => {
   const greetings = [
     { text: 'Hello 👋' },         // English
     { text: 'नमस्ते 🙏' },         // Hindi
-    { text: 'नमस्कार 🌸' },        // Marathi
+    { text: 'હેલો 🌸' },        // Gujarati
     { text: 'నమస్తే 🎉' },         // Telugu
     { text: 'ਹੈਲੋ 👋' }            // Punjabi (neutral)
   ];

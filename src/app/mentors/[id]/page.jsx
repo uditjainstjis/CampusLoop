@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; //Import useEffect
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Button } from "@components/components/ui/button";
@@ -16,13 +16,13 @@ const MentorProfile = ({ mentor }) => {
   // Format availability into displayable slots
   const formatAvailabilitySlots = (availability) => {
     if (!availability || availability.length === 0) return [];
-    
+
     return availability.map(slot => {
       // Parse date
       const date = new Date(slot.date);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      
+
       // Format date display
       let dateDisplay;
       if (date.toDateString() === today.toDateString()) {
@@ -32,11 +32,11 @@ const MentorProfile = ({ mentor }) => {
       } else {
         dateDisplay = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       }
-      
+
       // Format time for display
       const startTime = formatTimeDisplay(slot.startTime);
       const endTime = formatTimeDisplay(slot.endTime);
-      
+
       return {
         date: dateDisplay,
         time: `${startTime} - ${endTime}`,
@@ -86,7 +86,7 @@ const MentorProfile = ({ mentor }) => {
 
   // Prepare the displayable slots
   const availableSlots = formatAvailabilitySlots(mentor?.availability);
-  
+
   // Find the selected slot object
   const selectedSlotObject = availableSlots.find(
     slot => `${slot.rawDate}-${slot.rawTime}` === selectedSlot
@@ -95,14 +95,14 @@ const MentorProfile = ({ mentor }) => {
   return (
     <div className="flex min-h-screen bg-white overflow-hidden">
       {/* Left Column - Profile Info */}
-      <motion.div 
+      <motion.div
         initial={{ x: -30, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-[340px] bg-[#27276B] text-white p-8 flex flex-col items-center shadow-lg relative"
       >
         {/* Profile Image with animation */}
-        <motion.div 
+        <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
@@ -114,9 +114,9 @@ const MentorProfile = ({ mentor }) => {
               <User className="w-20 h-20" />
             </AvatarFallback>
           </Avatar>
-          
+
           {/* Purple gradient overlay */}
-          <motion.div 
+          <motion.div
             className="absolute inset-0 bg-gradient-to-b from-purple-500/0 to-purple-500/20 opacity-0"
             whileHover={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
@@ -132,9 +132,9 @@ const MentorProfile = ({ mentor }) => {
         >
           <h1 className="text-3xl font-bold mb-2 text-center px-4">Aman Kumar</h1>
           <p className="text-sm mb-4 text-center opacity-90 px-4">DRDO Intern</p>
-          
+
           {/* Animated divider */}
-          <motion.div 
+          <motion.div
             className="h-0.5 bg-purple-300/30 w-16 mx-auto mb-5"
             initial={{ width: 0 }}
             animate={{ width: "4rem" }}
@@ -144,7 +144,7 @@ const MentorProfile = ({ mentor }) => {
 
         {/* Rate Display */}
         {mentor?.rate && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
@@ -158,7 +158,7 @@ const MentorProfile = ({ mentor }) => {
 
         {/* Skills Section */}
         {mentor?.skills && mentor.skills.length > 0 && (
-          <motion.div 
+          <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.5 }}
@@ -170,8 +170,8 @@ const MentorProfile = ({ mentor }) => {
             </div>
             <div className="flex flex-wrap gap-2 mb-6">
               {mentor.skills.map((skill, index) => (
-                <span 
-                  key={index} 
+                <span
+                  key={index}
                   className="text-xs bg-white/10 px-3 py-1 rounded-full"
                 >
                   {skill}
@@ -183,7 +183,7 @@ const MentorProfile = ({ mentor }) => {
 
         {/* Help Section */}
         {mentor?.help && mentor.help.length > 0 && (
-          <motion.div 
+          <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.5 }}
@@ -203,7 +203,7 @@ const MentorProfile = ({ mentor }) => {
 
         {/* About Section */}
         {mentor?.about && (
-          <motion.div 
+          <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.5 }}
@@ -221,7 +221,7 @@ const MentorProfile = ({ mentor }) => {
       </motion.div>
 
       {/* Right Column - Main Content */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.3 }}
@@ -230,7 +230,7 @@ const MentorProfile = ({ mentor }) => {
         {/* Added the requested 80px top margin */}
         <div className="mt-20">
           {/* Session Card */}
-          <motion.div 
+          <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
@@ -254,7 +254,7 @@ const MentorProfile = ({ mentor }) => {
               <>
                 {/* Available Slots */}
                 {availableSlots && availableSlots.length > 0 ? (
-                  <motion.div 
+                  <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.5, duration: 0.5 }}
@@ -267,9 +267,9 @@ const MentorProfile = ({ mentor }) => {
                           variant="outline"
                           className={`justify-between border-gray-300 text-gray-800 hover:bg-gray-100
                                     ${selectedSlot === `${slot.rawDate}-${slot.rawTime}`
-                                      ? 'bg-purple-600 text-white border-purple-600 hover:bg-purple-700 hover:text-white'
-                                      : 'bg-white'
-                                    }`}
+                            ? 'bg-purple-600 text-white border-purple-600 hover:bg-purple-700 hover:text-white'
+                            : 'bg-white'
+                            }`}
                           onClick={() => handleSlotSelect(slot)}
                         >
                           <span>{slot.date}</span>
@@ -277,7 +277,7 @@ const MentorProfile = ({ mentor }) => {
                         </Button>
                       ))}
                     </div>
-                    
+
                     {selectedSlot && (
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -285,7 +285,7 @@ const MentorProfile = ({ mentor }) => {
                         transition={{ duration: 0.4 }}
                         className="mt-8 flex justify-center"
                       >
-                        <Button 
+                        <Button
                           className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-6 text-lg"
                           onClick={proceedToBooking}
                         >
@@ -307,7 +307,7 @@ const MentorProfile = ({ mentor }) => {
                 transition={{ duration: 0.5 }}
               >
                 <h3 className="text-lg font-medium mb-6 text-gray-800">Booking Confirmation</h3>
-                
+
                 <div className="bg-gray-50 p-5 rounded-lg mb-6">
                   <div className="flex items-start gap-3 mb-4">
                     <CalendarDays className="w-5 h-5 text-purple-600 mt-1" />
@@ -316,7 +316,7 @@ const MentorProfile = ({ mentor }) => {
                       <p className="text-sm text-gray-600">{selectedSlotObject?.fullDisplay}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-3 mb-4">
                     <User className="w-5 h-5 text-purple-600 mt-1" />
                     <div>
@@ -324,7 +324,7 @@ const MentorProfile = ({ mentor }) => {
                       <p className="text-sm text-gray-600">{mentor?.name}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-3">
                     <MessageSquare className="w-5 h-5 text-purple-600 mt-1" />
                     <div>
@@ -333,22 +333,22 @@ const MentorProfile = ({ mentor }) => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex justify-between items-center py-4 border-t border-gray-200">
                   <div>
                     <p className="text-sm text-gray-500">Total</p>
                     <p className="text-xl font-medium text-gray-800">{formatPrice(mentor?.rate || 50)}</p>
                   </div>
-                  
+
                   <div className="flex gap-3">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       className="border-gray-300 text-gray-700"
                       onClick={() => setBookingStep(0)}
                     >
                       Back
                     </Button>
-                    <Button 
+                    <Button
                       className="bg-purple-600 hover:bg-purple-700 text-white px-6"
                       onClick={confirmBooking}
                     >
@@ -359,9 +359,9 @@ const MentorProfile = ({ mentor }) => {
               </motion.div>
             )}
           </motion.div>
-          
+
           {/* Have a Question Card */}
-          <motion.div 
+          <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
