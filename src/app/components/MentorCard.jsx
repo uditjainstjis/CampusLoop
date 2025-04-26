@@ -65,7 +65,7 @@ export default function MentorCard({ mentor }) {
       animate="visible"
       whileHover="hover"
       variants={cardVariants}
-      className="bg-white rounded-2xl shadow-md overflow-hidden px-6 py-8 text-center transition-all duration-300 h-full flex flex-col items-center justify-start min-h-[360px] border border-purple-100"
+      className="bg-white rounded-2xl z-10 shadow-md overflow-hidden px-6 py-8 text-center transition-all duration-300 h-full flex flex-col items-center justify-start min-h-[360px] border border-purple-100"
     >
       {/* Larger image with animation */}
       <motion.div 
