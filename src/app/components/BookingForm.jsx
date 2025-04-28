@@ -223,14 +223,6 @@ export default function BookingForm({ mentor, onSubmit }) {
           )}
         </div>
         
-        <motion.button
-          type="submit"
-          className="w-full bg-indigo-600 text-white py-3 px-6 rounded-md font-medium hover:bg-indigo-700 transition-colors"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          Book Session (${mentor.rate}/hour)
-        </motion.button>
       </form>
     </div>
   );

@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+// src/lib/mongodb.js
+import { MongoClient } from 'mongodb';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -9,50 +10,40 @@ if (!MONGODB_URI) {
 }
 
 /**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections growing exponentially
- * during API Route usage.
+ * Global is used here to maintain a cached connection promise across hot reloads
+ * in development. This prevents connections growing exponentially.
+ * We cache the promise that resolves to the raw MongoClient instance.
  */
-let cached = global.mongoose;
+let cached = global.mongoClientPromise;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = global.mongoClientPromise = { conn: null, promise: null };
 }
 
-async function dbConnect() {
-  if (cached.conn) {
-    // console.log('🚀 Using cached MongoDB connection');
-    return cached.conn;
-  }
-
-  if (!cached.promise) {
+// If there's no cached connection promise, create one
+if (!cached.promise) {
     const opts = {
-      bufferCommands: false, // Disable buffering for immediate error feedback
-      // useNewUrlParser: true, // Deprecated but sometimes needed for older setups
-      // useUnifiedTopology: true, // Deprecated but sometimes needed for older setups
+      serverSelectionTimeoutMS: 5000, // Timeout after 5s if cannot connect
+      // Note: useNewUrlParser and useUnifiedTopology are deprecated in recent driver versions
+      // You might add other MongoClient options here if needed
     };
 
-    // console.log('⏳ Creating new MongoDB connection promise');
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongooseInstance) => {
-      // console.log('✅ MongoDB Connected');
-      return mongooseInstance;
-    }).catch(error => {
-        console.error('❌ MongoDB Connection Error:', error);
-        cached.promise = null; // Reset promise on error
-        throw error; // Re-throw error to be caught by API handler
+    // Create a new MongoClient instance
+    const client = new MongoClient(MONGODB_URI, opts);
+
+    // Store the connection promise
+    cached.promise = client.connect().catch(error => {
+        console.error('❌ MongoDB (raw client) Connection Error:', error);
+        // Ensure the promise is rejected correctly
+        throw error;
     });
-  }
 
-  try {
-    // console.log('⏳ Awaiting MongoDB connection promise');
-    cached.conn = await cached.promise;
-  } catch (e) {
-      // If connection fails during await, nullify the promise and re-throw
-      cached.promise = null;
-      throw e;
-  }
-
-  return cached.conn;
+    // Optional: Store the resolved client instance once the promise resolves
+    cached.promise.then(clientInstance => {
+        cached.conn = clientInstance;
+    });
 }
 
-export default dbConnect;
+// Export the promise that resolves to the MongoClient instance.
+// The adapter and other server-side code will await this promise.
+export default cached.promise;
