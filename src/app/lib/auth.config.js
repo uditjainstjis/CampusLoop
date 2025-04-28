@@ -50,7 +50,7 @@ const storedOtpInfo = user.otpInfo; // <--- Retrieve stored OTP info
 const providedOtpHash = hashOtp(otp); // Hash the provided OTP
 
 if (!storedOtpInfo || storedOtpInfo.code !== providedOtpHash) { // <--- Check stored vs provided
-    console.log("Authorize failed: OTP mismatch for user:", mobileNumber);
+    console.log(`Authorize failed: OTP mismatch for user: ${storedOtpInfo} vs ${providedOtpHash}`, mobileNumber);
     throw new Error("Invalid mobile number or OTP."); // OTP mismatch
 }
 
