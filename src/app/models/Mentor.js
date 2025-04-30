@@ -8,13 +8,13 @@ const SlotSchema = new mongoose.Schema({
   startTime: {
     type: String,
     required: [true, 'Please provide the start time.'],
-    match: [/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Use HH:mm format for time.']
+    match: [/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Use HH:mm format for time.'],
   },
   endTime: {
     type: String,
     required: [true, 'Please provide the end time.'],
-    match: [/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Use HH:mm format for time.']
-  }
+    match: [/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Use HH:mm format for time.'],
+  },
 }, { _id: false });
 
 const MentorSchema = new mongoose.Schema({
@@ -33,25 +33,23 @@ const MentorSchema = new mongoose.Schema({
     required: [true, 'Please describe the mentor.'],
     trim: true,
   },
-  help: {
-    type: [String],
-    required: [true, 'Please describe how the mentor can help.'],
-    validate: [val => Array.isArray(val) && val.length > 0, 'Please provide at least one help item.']
-  },
   availability: {
     type: [SlotSchema],
     required: [true, 'Please provide availability.'],
-    validate: [val => Array.isArray(val) && val.length > 0, 'Please provide at least one available slot.']
+    validate: {
+      validator: val => Array.isArray(val) && val.length > 0,
+      message: 'Please provide at least one available slot.',
+    }
   },
   imageUrl: {
     type: String,
     required: [true, 'Please provide an image URL for the mentor.'],
-    trim: true
+    trim: true,
+    match: [/^https?:\/\/.+\.(jpg|jpeg|png|webp|gif|svg)$/, 'Please provide a valid image URL.'],
   },
-  rate: {
+  seniority:{
     type: Number,
-    required: [true, 'Please provide an hourly rate for the mentor.'],
-    min: [0, 'Rate cannot be negative.']
+    required: true
   }
 }, { timestamps: true });
 

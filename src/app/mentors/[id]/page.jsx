@@ -268,25 +268,7 @@ const MentorProfile = () => {
             </motion.div>
           )}
 
-          {/* Help Section */}
-          {mentor?.help && mentor.help.length > 0 && (
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.7, duration: 0.5 }}
-              className="w-full text-left px-4 mb-4"
-            >
-              <div className="flex items-center gap-2 mb-2 md:mb-3">
-                <HelpCircle className="w-4 h-4 text-purple-200" />
-                <h3 className="text-sm uppercase tracking-wide opacity-80">Can Help With 😉</h3>
-              </div>
-              <ul className="list-disc list-inside text-sm space-y-1 opacity-90 pl-1">
-                {mentor.help.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
+
 
           {/* About Section */}
           {mentor?.about && (
@@ -294,7 +276,7 @@ const MentorProfile = () => {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.5 }}
-              className="mt-2 md:mt-6 w-full text-left px-4 pb-4 md:pb-0"
+              className="mt-3 md:mt-8 w-full text-left px-4 pb-4 md:pb-0"
             >
               <div className="flex items-center gap-2 mb-2 md:mb-3">
                 <BookOpen className="w-4 h-4 text-purple-200" />

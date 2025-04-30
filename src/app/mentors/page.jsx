@@ -3,11 +3,13 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
+// Image is not used in this component, you can remove the import if confirmed
+// import Image from 'next/image';
 import Link from 'next/link';
 import MentorCard from '../components/MentorCard';
+import MentorCardShimmer from '../components/MentorCardShimmer'; // Import the shimmer component
 
-// Predefined star positions
+// Predefined star positions (keep this)
 const STAR_POSITIONS = Array.from({ length: 50 }).map((_, i) => ({
   top: `${(i * 7.3 + i*0.1) % 100}%`,
   left: `${(i * 13.7 + i*0.2) % 100}%`,
@@ -15,36 +17,68 @@ const STAR_POSITIONS = Array.from({ length: 50 }).map((_, i) => ({
   scale: 0.5 + (i % 5) * 0.1,
 }));
 
-// Mentors data
-const FIRST_ROW_MENTORS = [
-  { id: "m1", name: "Aman Kumar", achievement: "DRDO Intern", imageUrl: "/aman.png" },
-  { id: "m2", name: "Bhavishya", achievement: "Google Intern", imageUrl: "/Bhavishya.JPG" },
-  { id: "m3", name: "Priyanshu Jangra", achievement: "SDE Microsoft", imageUrl: "/Priyanshu.PNG" },
-  { id: "m4", name: "Udita", achievement: "Amazon Intern", imageUrl: "/Udita.JPG" },
-  { id: "m5", name: "Sujanam", achievement: "Rishihood Intern", imageUrl: "/Sujanam.JPG" }
-];
-
-const SECOND_ROW_MENTORS = [
-  { id: "m6", name: "Pranav Singh", achievement: "Secretary GDG", imageUrl: "/Pranav.jpeg" },
-  { id: "m7", name: "Narendra Singh", achievement: "Founder CodeSingh", imageUrl: "/Narendra.jpeg" },
-];
-
 export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
+  const [mentors1, setMentors1] = useState([]); // Super Seniors
+  const [mentors2, setMentors2] = useState([]); // Seniors
 
   useEffect(() => {
-    const simulateFetch = () => {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
-    };
+    async function getData() {
+      setIsLoading(true); // Start loading
+      try {
+        const res = await fetch('/api/mentors');
+        if (!res.ok) {
+          throw new Error(`Error fetching mentors: ${res.status} ${res.statusText}`);
+        }
+        const data = await res.json();
+        const dataArr = data.mentors;
 
-    simulateFetch();
+        const firstRow = [];
+        const secondRow = [];
+
+        dataArr.forEach(mentor => {
+          if (mentor.seniority === 1) {
+            firstRow.push(mentor);
+          } else if (mentor.seniority === 2) {
+            secondRow.push(mentor);
+          }
+        });
+
+        setMentors1(firstRow);
+        setMentors2(secondRow);
+
+      } catch (error) {
+        console.error('Got error while fetching Mentors data', error);
+        // Optionally set state to indicate error
+      } finally {
+        // Add a small delay to make the shimmer effect visible
+        setTimeout(() => {
+           setIsLoading(false); // End loading
+        }, 500); // Minimum 500ms loading time
+      }
+    }
+
+    getData();
   }, []);
+
+  // Removed the second useEffect for simulating fetch, the first useEffect handles the actual fetch and loading state.
+  // useEffect(() => {
+  //   const simulateFetch = () => {
+  //     setTimeout(() => {
+  //       setIsLoading(false);
+  //     }, 1000);
+  //   };
+  //   simulateFetch();
+  // }, []);
+
+
+  // Determine the number of shimmer cards to display.
+  // You can adjust this number based on how many cards you expect or want to show as placeholders.
+  const numberOfShimmerCards = 6; // Example: Display 6 shimmer cards per section
 
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero Section (keep as is) */}
       <div className="relative bg-gradient-to-b mt-12 from-purple-950 via-purple-900 to-indigo-900 text-white overflow-hidden">
         {/* Animated stars background */}
         <div className="absolute inset-0 overflow-hidden">
@@ -103,85 +137,71 @@ export default function Page() {
 
       {/* Main Content Area */}
       <div className="min-h-screen py-8 bg-gradient-to-b from-indigo-50 to-white">
-        {/* Loading State */}
-        <AnimatePresence mode="wait">
-          {isLoading && (
-            <motion.div
-              key="loading"
-              className="text-center py-16"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <motion.div
-                className="inline-block w-24 h-24 relative"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-              >
-                <div className="absolute inset-0 rounded-full border-4 border-purple-200 border-dashed"></div>
-                <div className="absolute top-1/2 left-1/2 w-6 h-6 rounded-full bg-purple-600 transform -translate-x-1/2 -translate-y-1/2"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full border-t-4 border-r-4 border-purple-600 animate-spin"></div>
-                </div>
-              </motion.div>
-              <p className="text-lg text-purple-800 mt-6 font-medium">Searching across the college...</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Content when not loading */}
-        {!isLoading && (
-          <motion.div
-            key="content"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-          >
-            {/* Super Seniors Section */}
-            <section className="mb-12">
-              <h2 className="text-2xl font-medium text-gray-900 mb-6">Super Seniors!</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> {/* Added grid layout */}
-                {FIRST_ROW_MENTORS.map(mentor => (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Super Seniors Section */}
+          <section className="mb-12">
+            <h2 className="text-2xl font-medium text-gray-900 mb-6">Super Seniors!</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {isLoading ? (
+                // Display Shimmer Cards while loading
+                Array.from({ length: numberOfShimmerCards }).map((_, index) => (
+                  <MentorCardShimmer key={index} />
+                ))
+              ) : (
+                // Display actual Mentor Cards when not loading
+                mentors1.map(mentor => (
                   <motion.div
-                    key={mentor.id}
-                    className="w-full" // Adjusted width
+                    // Using mentor._id as key. Ensure your API provides a unique ID.
+                    // If not, you might need to use mentor.id or another unique property.
+                    key={mentor._id}
+                    className="w-full"
                     variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 20 } }}
                     initial="hidden"
                     animate="visible"
-                    transition={{ duration: 0.3, delay: 0.1 * FIRST_ROW_MENTORS.indexOf(mentor) }} //Stagger animation
+                    // Stagger animation based on index
+                    transition={{ duration: 0.3, delay: 0.1 * mentors1.indexOf(mentor) }}
                   >
-                    <Link href={`/mentors/${mentor.id}`} className="block h-full">
+                    <Link href={`/mentors/${mentor._id}`} className="block h-full">
                       <MentorCard mentor={mentor} />
                     </Link>
                   </motion.div>
-                ))}
-              </div>
-            </section>
+                ))
+              )}
+            </div>
+          </section>
 
-            {/* Seniors Section */}
-            <section className="mb-12">
-              <h2 className="text-2xl font-medium text-gray-900 mb-6">Seniors!</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> {/* Added grid layout */}
-                {SECOND_ROW_MENTORS.map(mentor => (
-                  <motion.div
-                    key={mentor.id}
-                    className="w-full" // Adjusted width
+          {/* Seniors Section */}
+          <section className="mb-12">
+            <h2 className="text-2xl font-medium text-gray-900 mb-6">Seniors!</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {isLoading ? (
+                // Display Shimmer Cards while loading
+                Array.from({ length: numberOfShimmerCards }).map((_, index) => (
+                  <MentorCardShimmer key={index + numberOfShimmerCards} /> // Use offset for key in the second section
+                ))
+              ) : (
+                // Display actual Mentor Cards when not loading
+                mentors2.map(mentor => (
+                   <motion.div
+                    // Using mentor._id as key. Ensure your API provides a unique ID.
+                    // If not, you might need to use mentor.id or another unique property.
+                    key={mentor._id}
+                    className="w-full"
                     variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 20 } }}
                     initial="hidden"
                     animate="visible"
-                    transition={{ duration: 0.3, delay: 0.1 * SECOND_ROW_MENTORS.indexOf(mentor) }}//Stagger animation
+                    // Stagger animation based on index
+                    transition={{ duration: 0.3, delay: 0.1 * mentors2.indexOf(mentor) }}
                   >
-                    <Link href={`/mentors/${mentor.id}`} className="block h-full">
+                    <Link href={`/mentors/${mentor._id}`} className="block h-full">
                       <MentorCard mentor={mentor} />
                     </Link>
                   </motion.div>
-                ))}
-              </div>
-            </section>
-          </motion.div>
-        )}
+                ))
+              )}
+            </div>
+          </section>
+        </div>
       </div>
     </>
   );

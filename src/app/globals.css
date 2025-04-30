@@ -248,3 +248,19 @@ a, button {
     background-position: 200% 0;
   }
 }
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer-animation {
+  /* Ensure the background covers the placeholder area */
+  background-size: 200% 100%;
+  /* Apply the animation */
+  animation: shimmer 1.5s infinite linear;
+}
