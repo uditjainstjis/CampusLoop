@@ -254,13 +254,13 @@ a, button {
     transform: translateX(-100%);
   }
   100% {
-    transform: translateX(100%);
+    transform: translateX(100%); /* Or some other movement */
   }
 }
 
 .shimmer-animation {
-  /* Ensure the background covers the placeholder area */
-  background-size: 200% 100%;
-  /* Apply the animation */
+  /* Current duration might be something like 1.5s */
   animation: shimmer 1.5s infinite linear;
+  /* or */
+  /* animation: shimmer 1.5s infinite ease-in-out; */
 }

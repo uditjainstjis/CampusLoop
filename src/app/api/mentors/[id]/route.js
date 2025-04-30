@@ -1,122 +1,161 @@
 // File: app/api/mentors/[id]/route.js
 
+// Import necessary modules from Next.js, Mongoose, and your project setup
 import { NextResponse } from 'next/server';
-import dbConnect from '../../../lib/mongodb'; // Adjust path if needed
-import Mentor from '../../../models/Mentor';     // Adjust path if needed
-import mongoose from 'mongoose';
-import { getServerSession } from "next-auth/next";
-import { authOptions } from '../../../lib/auth.config'; // Assuming your auth options are here
+import dbConnect from '../../../lib/mongodbdata'; // Adjust path if needed based on your project structure
+import Mentor from '../../../models/Mentor';     // Adjust path if needed based on your project structure
+import mongoose from 'mongoose'; // Import mongoose for ObjectId validation and error handling
+import { getServerSession } from "next-auth/next"; // For session authentication
+import { authOptions } from '../../../lib/auth.config'; // Assuming your auth options are here (adjust path)
 
-// --- GET Request Handler (Existing Code - slightly modified session check) ---
+// --- GET Request Handler: Fetch a single mentor by ID ---
+// This function will handle requests to GET /api/mentors/[id]
 export async function GET(request, { params }) {
+  // Extract the dynamic 'id' segment from the URL parameters
   const { id } = params;
-  // const session = await getServerSession(req, res, authOptions); // Use authOptions
 
-  // Optional: Uncomment if you want GET requests to be protected too
+  // Authentication Check (Optional for GET, uncomment if needed)
+  // You might want to protect reading mentor data depending on your app's requirements.
+  // const session = await getServerSession(authOptions); // Get the server session
   // if (!session || !session.user) {
   //   return NextResponse.json(
-  //     { message: "Unauthorized" }, { status: 401 }
+  //     { message: "Unauthorized: You must be logged in to view mentor profiles." },
+  //     { status: 401 } // 401 Unauthorized
   //   );
   // }
 
+  // Input Validation: Check if the provided ID is a valid MongoDB ObjectId format
   if (!id || !mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json(
-      { message: "Invalid Mentor ID format." }, { status: 400 }
+      { message: "Invalid Mentor ID format." },
+      { status: 400 } // 400 Bad Request
     );
   }
 
   try {
+    // Ensure database connection is established
     await dbConnect();
+
+    // Find the mentor document by its MongoDB _id
+    // .lean() makes the query return a plain JavaScript object instead of a Mongoose document,
+    // which is generally faster for read operations when you don't need Mongoose methods.
     const mentor = await Mentor.findById(id).lean();
 
+    // Check if a mentor was found with the given ID
     if (!mentor) {
       return NextResponse.json(
-        { message: "Mentor not found." }, { status: 404 }
+        { message: "Mentor not found." },
+        { status: 404 } // 404 Not Found
       );
     }
 
+    // Format the mentor data for the response
+    // Convert Mongoose's _id (ObjectId) to a string 'id' field
+    // and remove the original _id field from the response.
     const formattedMentor = {
         ...mentor,
-        id: mentor._id.toString(),
-        _id: undefined,
+        id: mentor._id.toString(), // Add a string 'id' field
+        _id: undefined, // Remove the original _id field
     };
 
+    // Return the formatted mentor data with a 200 OK status
     return NextResponse.json(formattedMentor, { status: 200 });
 
   } catch (error) {
+    // Log the error for server-side debugging
     console.error(`API Error fetching mentor with ID: ${id}`, error);
+
+    // Handle specific common errors (e.g., database connection issues)
     if (error.name === 'MongoNetworkError' || error.message.includes('connect ECONNREFUSED')) {
          return NextResponse.json(
-             { message: "Database connection error." }, { status: 503 }
+             { message: "Database connection error." },
+             { status: 503 } // 503 Service Unavailable
          );
     }
+
+    // Return a generic 500 Internal Server Error for unhandled exceptions
     return NextResponse.json(
-      { message: "Internal Server Error: Could not fetch mentor details." }, { status: 500 }
+      { message: "Internal Server Error: Could not fetch mentor details." },
+      { status: 500 }
     );
   }
 }
 
-// --- PUT Request Handler (New Code for Updates) ---
+// --- PUT Request Handler (Update a mentor by ID) ---
+// This function will handle requests to PUT /api/mentors/[id]
 export async function PUT(request, { params }) {
   const { id } = params;
-  // const session = await getServerSession(authOptions); // Use authOptions
 
-  // --- Authentication Check ---
-  // IMPORTANT: Protect your update endpoint.
-  // You might want more granular checks here (e.g., is the user an admin?)
-  // if (!session || !session.user /* || !session.user.isAdmin */) { // Add admin check if needed
-  //   return NextResponse.json(
-  //     { message: "Unauthorized: You must be logged in (and potentially an admin) to update mentors." },
-  //     { status: 401 }
-  //   );
+  // --- Authentication Check (CRITICAL for PUT) ---
+  // Implement robust authentication and authorization here.
+  // Only authorized users (e.g., the mentor themselves, or an admin) should be able to update.
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user) {
+    return NextResponse.json(
+      { message: "Unauthorized: You must be logged in to update mentor profiles." },
+      { status: 401 } // 401 Unauthorized
+    );
+  }
+  // TODO: Add authorization check - e.g., is session.user._id the same as the mentor's user ID?
+  // Or check if session.user has an admin role etc.
+  // const mentorToUpdate = await Mentor.findById(id);
+  // if (!mentorToUpdate || mentorToUpdate.userId.toString() !== session.user._id.toString()) {
+  //    return NextResponse.json({ message: "Forbidden: You do not have permission to update this profile." }, { status: 403 });
   // }
-  // --- End Authentication Check ---
 
-  // Validate ID format
+
+  // Input Validation: Check if the provided ID is a valid MongoDB ObjectId format
   if (!id || !mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json(
-      { message: "Invalid Mentor ID format." }, { status: 400 }
+      { message: "Invalid Mentor ID format." },
+      { status: 400 } // 400 Bad Request
     );
   }
 
   let updateData;
   try {
-    // Parse the request body for the update data
+    // Parse the request body to get the data to update the mentor with
     updateData = await request.json();
   } catch (error) {
+    // If the request body is not valid JSON
     return NextResponse.json(
-      { message: "Invalid request body. Ensure it's valid JSON." }, { status: 400 }
+      { message: "Invalid request body. Ensure it's valid JSON." },
+      { status: 400 } // 400 Bad Request
     );
   }
 
-  // Basic validation: Ensure required fields are present if needed
-  // (Mongoose validation will handle more complex cases)
-  if (!updateData || typeof updateData !== 'object') {
+  // Basic validation: Ensure the parsed data is an object and not empty
+  if (!updateData || typeof updateData !== 'object' || Object.keys(updateData).length === 0) {
      return NextResponse.json(
-      { message: "Invalid or empty update data provided." }, { status: 400 }
+      { message: "Invalid or empty update data provided." },
+      { status: 400 } // 400 Bad Request
     );
   }
 
-  // Optional: Prevent updating certain fields like _id or createdAt/updatedAt
-  delete updateData._id;
-  delete updateData.id; // Don't try to update the string 'id' field
-  delete updateData.createdAt;
-  delete updateData.updatedAt;
+  // Security: Prevent clients from attempting to update sensitive/immutable fields
+  delete updateData._id; // Prevent updating the MongoDB ObjectId
+  delete updateData.id; // Prevent updating the derived string 'id' field
+  // You might also want to prevent updates to creation timestamps, user associations, etc.
+  // delete updateData.createdAt;
+  // delete updateData.userId;
 
 
   try {
-    await dbConnect(); // Ensure database connection
+    // Ensure database connection is established
+    await dbConnect();
 
-    // Find the mentor by ID and update it
-    // - `new: true` returns the updated document
-    // - `runValidators: true` ensures the update respects your schema rules
+    // Find the mentor by ID and update it with the provided data
+    // Options:
+    // - `new: true`: Return the modified document rather than the original.
+    // - `runValidators: true`: Run Mongoose validation defined in your schema against the update data.
+    // - `context: 'query'`: Required for some Mongoose validators (like `unique`) when running in update queries.
     const updatedMentor = await Mentor.findByIdAndUpdate(
       id,
       updateData,
-      { new: true, runValidators: true, context: 'query' } // context:'query' helps with some validator types
-    ).lean(); // Use lean for plain JS object
+      { new: true, runValidators: true, context: 'query' }
+    ).lean(); // Use lean for a plain JS object response
 
-    // If mentor not found to update
+    // If findByIdAndUpdate returns null, it means the document with the given ID was not found
     if (!updatedMentor) {
       return NextResponse.json(
         { message: "Mentor not found." },
@@ -125,22 +164,24 @@ export async function PUT(request, { params }) {
     }
 
     // --- Data Transformation ---
+    // Format the updated mentor data for the response, similar to the GET request
     const formattedMentor = {
         ...updatedMentor,
-        id: updatedMentor._id.toString(),
+        id: updatedMentor._id.toString(), // Add string 'id'
         _id: undefined, // Remove original _id
     };
     // --- End Data Transformation ---
 
-    // Return the updated mentor's data
+    // Return the updated mentor's data with a 200 OK status
     return NextResponse.json(formattedMentor, { status: 200 });
 
   } catch (error) {
+    // Log the error for server-side debugging
     console.error(`API Error updating mentor with ID: ${id}`, error);
 
-    // Handle Mongoose Validation Errors specifically
+    // Handle specific Mongoose Validation Errors
     if (error instanceof mongoose.Error.ValidationError) {
-      // Extract meaningful messages (optional)
+      // Extract validation error messages to provide client-friendly feedback
       const errors = Object.values(error.errors).map(el => el.message);
       return NextResponse.json(
         { message: "Validation failed.", errors },
@@ -156,7 +197,7 @@ export async function PUT(request, { params }) {
          );
     }
 
-    // General server error
+    // Return a generic 500 Internal Server Error for other unhandled exceptions
     return NextResponse.json(
       { message: "Internal Server Error: Could not update mentor details." },
       { status: 500 }
@@ -164,5 +205,23 @@ export async function PUT(request, { params }) {
   }
 }
 
-// You could add DELETE handler here later if needed
-// export async function DELETE(request, { params }) { ... }
+// You can add other HTTP method handlers here if needed (e.g., DELETE)
+/*
+export async function DELETE(request, { params }) {
+  const { id } = params;
+  // Implement authentication and authorization checks here too!
+  // ... validation ...
+  try {
+     await dbConnect();
+     const deletedMentor = await Mentor.findByIdAndDelete(id).lean();
+     if (!deletedMentor) {
+        return NextResponse.json({ message: "Mentor not found." }, { status: 404 });
+     }
+     // Optionally return the deleted item or a success message
+     return NextResponse.json({ message: "Mentor deleted successfully.", id: deletedMentor._id.toString() }, { status: 200 });
+  } catch (error) {
+     console.error('Error deleting mentor:', error);
+     return NextResponse.json({ message: "Internal Server Error: Could not delete mentor." }, { status: 500 });
+  }
+}
+*/
